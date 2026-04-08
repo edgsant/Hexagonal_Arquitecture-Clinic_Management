@@ -1,0 +1,21 @@
+image: python:3.12
+
+# Guardar las dependencias en caché para que el CI sea más rápido
+cache:
+  paths:
+    - .cache/pip
+    - .venv
+
+before_script:
+  - pip install poetry==2.0.0
+  - poetry config virtualenvs.in-project true
+  - poetry install
+
+stages:
+  - test
+
+# Este trabajo ejecutará pytest en cada commit o Merge Request [cite: 48, 262]
+testing:
+  stage: test
+  script:
+    - poetry run pytest

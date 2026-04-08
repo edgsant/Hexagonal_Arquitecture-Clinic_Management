@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+build/
+dist/
+
+# Poetry
+.python-version
+poetry.lock
+
+# IDEs
+.vscode/
+.idea/
+
+# Práctica (Base de datos y Bruno)
+*.db
+.bruno/

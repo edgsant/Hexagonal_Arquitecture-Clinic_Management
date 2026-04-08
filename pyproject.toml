@@ -1,0 +1,39 @@
+[project]
+name = "dias2526-foxtrot"
+version = "0.1.0"
+description = "Práctica Final DIAS"
+authors = [
+    {name = "Edgar Santiesteban Mendo", email = "edgar.santiesteban22@estudiantes.uva.es"},
+    {name = "Marcos Palatino Alvarez Fulconis", email = "marcospalatino.alvarez@estudiantes.uva.es"},
+    {name = "Hugo Adan de la Fuente", email = "hugo.adan23@estudiantes.uva.es"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "flask>=3.1.3",
+    "flask-jwt-extended>=4.7.1",
+    "psycopg2-binary>=2.9.9",  # Obligatorio: Persistencia externa (PostgreSQL) 
+]
+
+[tool.poetry]
+package-mode = false  # Evita errores al no encontrar carpetas de código aún
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.3"
+pytest-cov = "^6.0.0"
+taskipy = "^1.14.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# ── Configuración de pytest ──────────────────────────────────────────────────
+[tool.pytest.ini_options]
+pythonpath = ["src"]  # Ajustado a la carpeta src que pide el enunciado [cite: 79]
+testpaths = ["tests"] # Ubicación obligatoria de los tests [cite: 261]
+
+# ── Tareas de taskipy ────────────────────────────────────────────────────────
+[tool.taskipy.tasks]
+# Permite ejecutar "poetry run task test" de forma sencilla [cite: 265]
+test = "pytest tests/ -v"
+run = "python src/main.py"

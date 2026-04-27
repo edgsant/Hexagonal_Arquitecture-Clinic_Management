@@ -56,24 +56,63 @@ mínima de trabajo coordinado y validación entre iguales.
 ---
 
 # 1. Introducción
-Breve descripción del sistema y del objetivo de la práctica.
+(Breve descripción del sistema y del objetivo de la práctica.)
+El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica. 
+El sistema tratará el seguimiento y trazabilidad del expediente de un paciente desde su registro, sus consultas y las pruebas médicas solicitadas junto a aquellos especialistas que las realizaron.
+El objetivo de esta practica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas.
+Se partirá de un documento que ya recoge el análisis del workflow de Requisitos, en docs/requisitos/documento-de-requisitos.
 
 ---
 
 # 2. Alcance del trabajo
+Este proyecto solo tratará un subconjunto acotado de funcionalidad del sistema clínico descrito en el enunciado para los flujos de trabajo de Análisis, Diseño e Implementación.
+
 ## Funcionalidad trabajada
+El sistema solo abarcará los siguientes casos de uso:
 - CU01 - Iniciar sesión
 - CU02 - Registrar paciente
-- ...
+- CU03 - Crear procedimiento clínico
+- CU04 - Registrar informe clínico inicial
+- CU05 - Registrar resultados de analítica
+- CU06 - Consultar procedimiento clínico
+- CU07 - Dar de alta al paciente
+
 ## Decisiones sobre el alcance funcional
-Indicar qué aspectos de los casos de uso se han simplificado, omitido o adaptado durante el desa---
+Para simplificar el sistema a desarrollar, se han tomado las siguientes decisiones:
+- Gestión de Especialistas: Todos los especialistas estarán ya dados de alta en el sistema, no se tratará las funcionalidades de dar de alta o gestionar sus cuentas.
+- Gestión de citas: El sistema no gestiona las citas o agendas de los pacientes, se asumirá que para las consultas o pruebas el paciente ya fue citado externamente.
+- Almacenamiento de pruebas: El sistema no gestiona la localización del almacenamiento de muestras de biopsias.
+
 # 3. Modelo de dominio
 ## 3.1 Clases identificadas
-Descripción de las principales clases del dominio.
+- Paciente: El paciente que tiene o ha tenido un procedimiento y se le ha dado de alta en nuestro sistema. Contiene los datos personales de dicho paciente.
+- Procedimiento: Clase 'contenedor' del historial del paciente. Contiene toda la información relacionada con un procedimiento del paciente; consultas, pruebas, informes, etc. El paciente solo puede tener un procedimiento activo en un momento dado.
+- InformeInicial: Documento creado en la primera consulta cuando se inicia un procedimiento del paciente. Recoge antecedentes y analisis fisico inicial del paciente.
+- ActoClinico: Clase abstracta que agrupa los distintos actos a los que se someterá un paciente durante un procedimiento, las consultas y las pruebas, con un unico atributo fecha para facilitar la trazabilidad temporal de nuestro sistema y la visión global de los actos realizados durante un procedimiento.
+- Consulta: Interacción entre el paciente y un urólogo donde se evalúa al paciente y se toman decisiones clínicas (dar de alta o realizar una prueba)
+- Prueba: Superclase que agrupa los distintos procedimientos clínicos a los que se puede someter un paciente durante su Procedimiento, junto a la consulta que solicitó la prueba.
+- Analitica: Prueba clínica donde un AnalistaClinico recoge los valores de los datos obtenidos en laboratorio sobre el paciente. 
+- PruebaRadiologica: Prueba clínica donde un Radiologo recoge los resultados de dos artefactos clínicos realizados sobre el paciente; la ResonanciaMagnetica y la Ecografia.  
+- ResonanciaMagnetica: Artefacto clinico de una PruebaRadiologica.
+- Ecografia: Artefacto clinico de una PruebaRadiologica.
+- Biopsia: Prueba clínica realizada por un urólogo donde se le toman muestras a un paciente.
+- Muestra: Muestras obtenidas durante una biopsia que deberán ser diagnositcadas por un anatomopatólogo. 
+- Intervencion: Prueba clínica realizada por un Urólogo donde se realiza una cirugía quirúrgica al paciente
+
+- Especialista: Superclase que agrupa todo el personal de la clínica. 
+- Usuario: Usuario ya dado de alta que usará el especialista para acceder al sistema
+- AnalistaClinico: Tipo de especialista encargado de recoger los datos en las Analiticas
+- AnatomoPatologo: Tipo de especilista encargado de analizar las Muestras tomadas en las Biopsias
+- Radiologo: Tipo de especialista encargado de tomar y analizar las PruebasRadiologicas y sus artefactos.
+- Urologo: Tipo de especialista encargado de las consultas y seguimiento del paciente.
+
 ## 3.2 Diagrama de dominio
-![Dominio](docs/diagramas/dominio.png)
+![Dominio](docs/diagramas/modelo-dominio/Modelo-de-Dominio-v2.png)
 ## 3.3 Comentarios
-Explicación de decisiones tomadas.
+Durante el análisis del modelo de dominio se han tomado las siguientes decisiones para garantizar el cumplimiento de las reglas de negocio y simplificar el diseño y arquitectura del sistema:
+- Superclase ActoClinico: Para evitar que un procedimiento clinico tenga diversas relaciones 'dispersas' entre consultas y pruebas, se ha modelado para que Procedimiento tenga una relación única con cada ActoClínico relevante durante el Procedimiento del paciente, asegurando que Procedimiento tenga el historial global y ordenado.
+- Separación de Consulta y Prueba: Al requerir trazabilidad entre una Prueba y quien la realizó, y la consulta y el urólogo que la solicitó, se han modelado las dos clases Consulta y Prueba con una asociación entre ellas.
+- Relación general entre especialista y ActoClinico vs especificacion:   
 ---
 # 4. Modelo de análisis
 ## 4.1 Casos de uso

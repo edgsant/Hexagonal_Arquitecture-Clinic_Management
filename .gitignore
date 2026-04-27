@@ -18,3 +18,7 @@ poetry.lock
 # Práctica (Base de datos y Bruno)
 *.db
 .bruno/
+
+# VPP
+*.lck
+*.bak_*

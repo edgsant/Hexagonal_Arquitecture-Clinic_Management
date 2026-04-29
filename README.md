@@ -124,13 +124,13 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 - CU01 - Iniciar sesión
 ![BCE CU01](docs/diagramas/CU01/Diagrama%20de%20analisis%20BCE%20-%20CU01.png)
 El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que quiere iniciar sesion, relacionado con la clase Boundary AccesoInicioSesion que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorInicioSesion y las clases Entity Usuario que es el usuario del sistema del Especialista y la Entity Especialista, que es la información asociada a dicho usuario sobre el especialista (datos personales, rol, etc)
-![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)
+![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.jpg)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
 - CU02 - Registrar paciente:
-![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20secuencia%20-%20CU02.png)
+![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20secuencia%20-%20CU02.jpg)
 ## 4.4 Comentarios
 Decisiones importantes.
 ---

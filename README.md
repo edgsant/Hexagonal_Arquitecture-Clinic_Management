@@ -119,6 +119,7 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 (Descripción breve.)
 - CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo de cuando un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión.  
 - CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente
+- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo de cuando un Urologo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos
 ## 4.2 Clases de análisis
 (Explicación de su papel.)
 - CU01 - Iniciar sesión
@@ -126,11 +127,17 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que quiere iniciar sesion, relacionado con la clase Boundary AccesoInicioSesion que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorInicioSesion y las clases Entity Usuario que es el usuario del sistema del Especialista y la Entity Especialista, que es la información asociada a dicho usuario sobre el especialista (datos personales, rol, etc)
 ![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
+![BCE CU03](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU03.png)
+El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el procedimiento, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorCrearProcedimiento y las clases Entity Paciente y Procedimiento.
+
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
 - CU02 - Registrar paciente:
 ![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20secuencia%20-%20CU02.png)
+- CU03- Crear procedimiento:
+![Secuencia CU03](docs/diagramas/CU03/Diagrama%20de%20secuencia%20-%20CU03.png)
+
 ## 4.4 Comentarios
 Decisiones importantes.
 ---

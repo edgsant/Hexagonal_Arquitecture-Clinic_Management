@@ -107,7 +107,7 @@ Para simplificar el sistema a desarrollar, se han tomado las siguientes decision
 - Urologo: Tipo de especialista encargado de las consultas y seguimiento del paciente.
 
 ## 3.2 Diagrama de dominio
-![Dominio](docs/diagramas/modelo-dominio/Modelo-de-Dominio-v2.png)
+![Dominio](docs/diagramas/modelo-dominio/Modelo-de-Dominio-v3.png)
 ## 3.3 Comentarios
 Durante el análisis del modelo de dominio se han tomado las siguientes decisiones para garantizar el cumplimiento de las reglas de negocio y simplificar el diseño y arquitectura del sistema:
 - Superclase ActoClinico: Para evitar que un procedimiento clinico tenga diversas relaciones 'dispersas' entre consultas y pruebas, se ha modelado para que Procedimiento tenga una relación única con cada ActoClínico relevante durante el Procedimiento del paciente, asegurando que Procedimiento tenga el historial global y ordenado.
@@ -118,22 +118,25 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 ## 4.1 Casos de uso
 (Descripción breve.)
 - CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo de cuando un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión.  
+- CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente
 ## 4.2 Clases de análisis
 (Explicación de su papel.)
 - CU01 - Iniciar sesión
 ![BCE CU01](docs/diagramas/CU01/Diagrama%20de%20analisis%20BCE%20-%20CU01.png)
 El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que quiere iniciar sesion, relacionado con la clase Boundary AccesoInicioSesion que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorInicioSesion y las clases Entity Usuario que es el usuario del sistema del Especialista y la Entity Especialista, que es la información asociada a dicho usuario sobre el especialista (datos personales, rol, etc)
-
+![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)
+El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
-
+- CU02 - Registrar paciente:
+![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20secuencia%20-%20CU02.png)
 ## 4.4 Comentarios
 Decisiones importantes.
 ---
 # 5. Diseño
 ## 5.1 Arquitectura
-Describir la arquitectura del sistema basada en la separación en capas (domain, application, inf- el papel de cada capa
+Describir la arquitectura del sistema basada en la separación en capas (domain, application, inf- el papel de cada capa)
 - las responsabilidades principales
 - cómo se relacionan entre sí
 ## 5.2 Diagrama de arquitectura

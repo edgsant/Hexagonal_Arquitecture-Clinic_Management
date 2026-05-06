@@ -133,30 +133,47 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 
 - CU05 - Registrar resultaddos de analitica: Este caso recoge el flujo de trabajo en el que un Analista clinico rellena una analitica pendiene de un procedimiento con los resultados de la prueba, sin flujos alternativos.
 
+
+- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urologo consulta la lista de procedimeintos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su informacion.
+
 ## 4.2 Clases de análisis
 (Explicación de su papel.)
+
 - CU01 - Iniciar sesión
 ![BCE CU01](docs/diagramas/CU01/Diagrama%20de%20analisis%20BCE%20-%20CU01.png)
 El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que quiere iniciar sesion, relacionado con la clase Boundary AccesoInicioSesion que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorInicioSesion y las clases Entity Usuario que es el usuario del sistema del Especialista y la Entity Especialista, que es la información asociada a dicho usuario sobre el especialista (datos personales, rol, etc)
+
+- CU02 - Registrar paciente
 ![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
+
+- CU03 - Crear procedimiento clinico
 ![BCE CU03](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU03.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el procedimiento, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorCrearProcedimiento y las clases Entity Paciente y Procedimiento.
+
+- CU04 - Registrar informe clinico inicial
 ![BCE CU04](docs/diagramas/CU04/Diagrama%20de%20analisis%20BCE%20-%20CU04.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el informe clinico inicial, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroIncial y las clases Entity Paciente, Procedimiento, InformeInicial, Solicitud y Cosulta.
+
+- CU05 - Registrar resultados de analitica
 ![BCE CU05](docs/diagramas/CU05/Diagrama%20de%20analisis%20BCE%20-%20CU05.png)El diagrama BCE de este caso de uso se compone del Actor Analista clinico, aquel que quiere registrar los resultados de la analitica, relacionado con la clase Boundary AccesoAnalista que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistrarResultados y las clases Entity Procedimiento y Analitica.
+
+- CU06 - Consultar procedimiento clinico
+![BCE CU06](docs/diagramas/CU06/Diagrama%20de%20analisis%20BCE%20-%20CU06.png)El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorConsultarProcedimiento y la clase Entity Procedimiento.
 
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
 - CU02 - Registrar paciente:
 ![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20Secuencia%20-%20CU02.png)
-- CU03- Crear procedimiento:
+- CU03 - Crear procedimiento:
 ![Secuencia CU03](docs/diagramas/CU03/Diagrama%20de%20secuencia%20-%20CU03.png)
 - CU04 - Registrar informe clinico inicial:
 ![Secuencia CU04](docs/diagramas/CU04/Diagrama%20de%20secuencia%20-%20CU04.png)
 - CU05 - Registrar resultados de analitica:
 ![Secuencia CU05](docs/diagramas/CU05/Diagrama%20de%20Secuencia%20-%20CU05.png)
+- CU06 - Consultar procedimiento clinico:
+![Secuencia CU06](docs/diagramas/CU06/Diagrama%20de%20Secuencia%20-%20CU06.png)
 
 ## 4.4 Comentarios
 Decisiones importantes.

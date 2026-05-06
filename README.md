@@ -117,9 +117,22 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 # 4. Modelo de análisis
 ## 4.1 Casos de uso
 (Descripción breve.)
-- CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo de cuando un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión.  
-- CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente
-- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo de cuando un Urologo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos
+
+
+- CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
+
+
+- CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente.
+
+
+- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo en el que un Urologo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos.
+
+
+- CU04 - Registrar informe clinico inicial: Este caso recoge el flujo de trabajo en el que un Urologo registra el informe inicial de un Paciente, sin flujos alternativos .
+
+
+- CU05 - Registrar resultaddos de analitica: Este caso recoge el flujo de trabajo en el que un Analista clinico rellena una analitica pendiene de un procedimiento con los resultados de la prueba, sin flujos alternativos.
+
 ## 4.2 Clases de análisis
 (Explicación de su papel.)
 - CU01 - Iniciar sesión
@@ -129,8 +142,9 @@ El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
 ![BCE CU03](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU03.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el procedimiento, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorCrearProcedimiento y las clases Entity Paciente y Procedimiento.
-![BCE CU04](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU04.png)
+![BCE CU04](docs/diagramas/CU04/Diagrama%20de%20analisis%20BCE%20-%20CU04.png)
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el informe clinico inicial, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroIncial y las clases Entity Paciente, Procedimiento, InformeInicial, Solicitud y Cosulta.
+![BCE CU05](docs/diagramas/CU05/Diagrama%20de%20analisis%20BCE%20-%20CU05.png)El diagrama BCE de este caso de uso se compone del Actor Analista clinico, aquel que quiere registrar los resultados de la analitica, relacionado con la clase Boundary AccesoAnalista que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistrarResultados y las clases Entity Procedimiento y Analitica.
 
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
@@ -139,8 +153,10 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 ![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20Secuencia%20-%20CU02.png)
 - CU03- Crear procedimiento:
 ![Secuencia CU03](docs/diagramas/CU03/Diagrama%20de%20secuencia%20-%20CU03.png)
-- CU03- Crear procedimiento:
-![Secuencia CU04](docs/diagramas/CU03/Diagrama%20de%20secuencia%20-%20CU04.png)
+- CU04 - Registrar informe clinico inicial:
+![Secuencia CU04](docs/diagramas/CU04/Diagrama%20de%20secuencia%20-%20CU04.png)
+- CU05 - Registrar resultados de analitica:
+![Secuencia CU05](docs/diagramas/CU05/Diagrama%20de%20Secuencia%20-%20CU05.png)
 
 ## 4.4 Comentarios
 Decisiones importantes.

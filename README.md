@@ -134,7 +134,10 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 - CU05 - Registrar resultaddos de analitica: Este caso recoge el flujo de trabajo en el que un Analista clinico rellena una analitica pendiene de un procedimiento con los resultados de la prueba, sin flujos alternativos.
 
 
-- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urologo consulta la lista de procedimeintos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su informacion.
+- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urologo consulta la lista de procedimientos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su informacion.
+
+
+- CU07 - Dar de alta un paciente: Este caso recoge el flujo de trabajo en el que un Urologo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
 
 ## 4.2 Clases de análisis
 (Explicación de su papel.)
@@ -161,6 +164,9 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 - CU06 - Consultar procedimiento clinico
 ![BCE CU06](docs/diagramas/CU06/Diagrama%20de%20analisis%20BCE%20-%20CU06.png)El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorConsultarProcedimiento y la clase Entity Procedimiento.
 
+- CU07 - dar de alta un paciente
+![BCE CU07](docs/diagramas/CU07/Diagrama%20de%20analisis%20BCE%20-%20CU07.png)El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorDarDeAlta y la clase Entity Procedimiento.
+
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
@@ -174,6 +180,8 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 ![Secuencia CU05](docs/diagramas/CU05/Diagrama%20de%20Secuencia%20-%20CU05.png)
 - CU06 - Consultar procedimiento clinico:
 ![Secuencia CU06](docs/diagramas/CU06/Diagrama%20de%20Secuencia%20-%20CU06.png)
+- CU07 - Dar de alta a un paciente
+![Secuencia CU06](docs/diagramas/CU07/Diagrama%20de%20Secuencia%20-%20CU07.png)
 
 ## 4.4 Comentarios
 Decisiones importantes.

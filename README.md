@@ -188,9 +188,25 @@ Decisiones importantes.
 ---
 # 5. Diseño
 ## 5.1 Arquitectura
-Describir la arquitectura del sistema basada en la separación en capas (domain, application, inf- el papel de cada capa)
-- las responsabilidades principales
-- cómo se relacionan entre sí
+
+Nuestro sistema aplica una estructura hexagonal, dividiendo el sistema en las capas Domain, Application, Infraestructure, y Transversal.
+Al aplicar este patron de diseño, nuestra estructura basada en capas mantiene el dominio como la capa más profunda para
+evitar un fuerte acoplamiento de dependencias entre dominio e interfaces, bases de datos, etc.
+Mantendríamos de esta forma las 3 capas definidas en la arquitectura hexagonal, donde las capas internas no dependen ni conocen 
+las capas externas, mientras que las externas usan las funcionalidades ofrecidas por las internas.
+
+### 5.1.1 Responsabilidades de cada capa.
+
+- Domain: Esta capa se encarga de implementar la logica de negocio, siendo el corazon de la aplicacion y dependiendo de esta el resto de funcionalidades del sistema.
+
+- Application: Esta capa se encarga de implementar los requisitos funcionales y los casos de uso, siendo la capa de servicios que da acceso al dominio de nuestro sistema.
+
+- Infrastructure: Esta capa se encarga de proporcionar distintos tipos de adaptadores para enlazar nuestro sistema con distintos tipos de acceso a externos a nuestro sistema, gestionando tanto el acceso a datos como a otras funcionalidades del sistema como pueden ser los servicios.
+
+- Presentation: Adaptador de la capa de infraestructura que permite llevar nuestro sistema a la red a traves de peticiones HTTP.
+
+- Persistence: Adaptador encargado de implementar requisitos de informacion, encargandose de las distintas formas en las que nuestro sistema va a implementar la persistencia, buscando una forma utilizada en entornos de trabajo reales como puede ser una base de datos (persistencia real), y otra con la que poder testear las entidades puras, intanciando clases del dominio unicamente durante la ejecucion de nuestro sistema (repositorios en memoria -> persistencia NO real).
+
 ## 5.2 Diagrama de arquitectura
 ![Arquitectura](docs/diagramas/arquitectura.png)
 ## 5.3 Diseño de clases

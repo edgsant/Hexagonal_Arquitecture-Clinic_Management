@@ -184,7 +184,15 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 ![Secuencia CU06](docs/diagramas/CU07/Diagrama%20de%20Secuencia%20-%20CU07.png)
 
 ## 4.4 Comentarios
-Decisiones importantes.
+(Decisiones importantes.)
+
+- Desacoplamiento paciente-procedimiento-consulta:
+Aunque en el caso real un paciente en nuestro sistema no existiría antes de una consulta inicial o sin procedimiento, se ha decidido que administrativamente 
+el sistema permitirá el registro del paciente independientemente de sus procedimientos, y procedimientos nuevos independientes de las consultas, 
+logrando desacoplar dependencias entre los casos de uso 2-Crear procedimiento, 3-Registrar Paciente y 4-Registrar informe inicial y evitando
+bucles circulares en los diagramas de secuencia.
+
+
 ---
 # 5. Diseño
 ## 5.1 Arquitectura

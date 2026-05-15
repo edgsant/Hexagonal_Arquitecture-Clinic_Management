@@ -196,6 +196,10 @@ bucles circulares en los diagramas de secuencia.
 ---
 # 5. Diseño
 ## 5.1 Arquitectura
+(Describir la arquitectura del sistema basada en la separación en capas (domain, application, inf-) el papel de cada capa)
+- las responsabilidades principales
+- cómo se relacionan entre sí
+
 
 Nuestro sistema aplica una estructura hexagonal, dividiendo el sistema en las capas Domain, Application, Infraestructure, y Transversal.
 Al aplicar este patron de diseño, nuestra estructura basada en capas mantiene el dominio como la capa más profunda para
@@ -205,22 +209,22 @@ las capas externas, mientras que las externas usan las funcionalidades ofrecidas
 
 ### 5.1.1 Responsabilidades de cada capa.
 
-- Domain: Esta capa se encarga de implementar la logica de negocio, siendo el corazon de la aplicacion y dependiendo de esta el resto de funcionalidades del sistema.
+- **Domain**: Esta capa se encarga de implementar la logica de negocio, siendo el corazon de la aplicacion y dependiendo de esta el resto de funcionalidades del sistema.
 
-- Application: Esta capa se encarga de implementar los requisitos funcionales y los casos de uso, siendo la capa de servicios que da acceso al dominio de nuestro sistema.
+- **Application**: Esta capa se encarga de implementar los requisitos funcionales y los casos de uso, siendo la capa de servicios que da acceso al dominio de nuestro sistema.
 
-- Infrastructure: Esta capa se encarga de proporcionar distintos tipos de adaptadores para enlazar nuestro sistema con distintos tipos de acceso a externos a nuestro sistema, gestionando tanto el acceso a datos como a otras funcionalidades del sistema como pueden ser los servicios.
+- **Infrastructure**: Esta capa se encarga de proporcionar distintos tipos de adaptadores para enlazar nuestro sistema con distintos tipos de acceso a externos a nuestro sistema, gestionando tanto el acceso a datos como a otras funcionalidades del sistema como pueden ser los servicios.
+    - **Presentation**: Adaptador de la capa de infraestructura que permite llevar nuestro sistema a la red a traves de peticiones HTTP.
+    - **Persistence**: Adaptador encargado de implementar requisitos de informacion, encargandose de las distintas formas en las que nuestro sistema va a implementar la persistencia, buscando una forma utilizada en entornos de trabajo reales como puede ser una base de datos (persistencia real), y otra con la que poder testear las entidades puras, instanciando clases del dominio unicamente durante la ejecucion de nuestro sistema (repositorios en memoria -> persistencia NO real).
 
-- Presentation: Adaptador de la capa de infraestructura que permite llevar nuestro sistema a la red a traves de peticiones HTTP.
-
-- Persistence: Adaptador encargado de implementar requisitos de informacion, encargandose de las distintas formas en las que nuestro sistema va a implementar la persistencia, buscando una forma utilizada en entornos de trabajo reales como puede ser una base de datos (persistencia real), y otra con la que poder testear las entidades puras, intanciando clases del dominio unicamente durante la ejecucion de nuestro sistema (repositorios en memoria -> persistencia NO real).
+- **Transversal**: Capa que reúne utilidades usadas o que usarán el resto de capas, en nuestro caso conteniendo la clase que aplica el patrón factoría y el container encargado de la inyección de dependencias.
 
 ## 5.2 Diagrama de arquitectura
-![Arquitectura](docs/diagramas/arquitectura.png)
+![Arquitectura](docs/diagramas/diagrama-arquitectura/Diagrama%20de%20arquitectura.png)
 ## 5.3 Diseño de clases
-![Clases](docs/diagramas/diseno_clases.png)
+![Clases](docs/diagramas/diagrama-diseno/Clases%20de%20diseno.png)
 ## 5.4 Decisiones de diseño
-Describir las principales decisiones de diseño adoptadas, incluyendo:
+(Describir las principales decisiones de diseño adoptadas, incluyendo:)
 - uso de patrones (si aplica)
 - asignación de responsabilidades entre clases y capas
 - organización del código
@@ -228,6 +232,29 @@ Por cada decisión relevante, justificar:
 - qué problema resuelve
 - cómo se relaciona con los casos de uso y el modelo de análisis
 - qué impacto tiene en la implementación
+
+Se ha diseñado la implementación de nuestro sistema con las siguientes decisiones:
+- Capa de dominio y alcance reducido:
+Para la implementación de nuestro sistema, al tener que realizar una selección de casos de uso reducida (CU01-CU07) se ha decidido delimitar la implementación de las entidades de dominio a solo aquellas necesarias para ofrecer la implementación de los casos de uso cubiertos por nuestro alcance.
+
+- Patrón Domain Model:
+Se ha estructurado la capa de dominio acorde a la estructura hexagonal, encapsulando en la capa de dominio mediante clases de diseño interconectadas basadas en el modelo de dominio realizado, cada una con la responsabilidad de la lógica de negocio de su propia entidad equivalente del modelo de dominio y desacoplado de las capas de servicio e infraestructura.
+
+- Patrón Service Layer y Operation Script:
+Se ha organizado la capa de aplicación como una Service layer, diseñando una clase ServicioCasoDeUso por cada caso de uso, interpretando cada caso de uso como una transacción atómica donde cada clase de esta capa se encargará de orquestar las clases de dominio y las interfaces de los repositorios encargados de la persistencia para controlar el flujo de cada caso de uso, permitiendo que nuestro sistema pueda ofrecer sus funcionalidades a distintos tipos de clientes mediante la capa infraestructura y aportando una capa de abstracción para simplificar las operaciones de la capa de dominio. 
+
+- Patrón Repository:
+Se ha diseñado el acceso a los datos de la capa de persistencia mediante Repositorios e interfaces de dichos repositorios para aportar abstracción sobre el acceso a datos, ahora orientado al dominio, permitiendo que la capa aplicación solo dependa de la capa dominio y no dependa ni conozca el léxico de la capa infraestructura.
+Además, debido al alcance de la práctica, se ha aplicado el concepto de Aggregate Root, centralizando la persistencia en las entidades principales y evitando crear un repostiorio por entidad. De esta forma, se han diseñado 3 repositorios y sus respectivas interfaces que centralizan el acceso a los datos y proporcionan métodos oriantados al dominio, PacienteRepository, ProcedimientoRepository y UsuarioRepository.
+
+- Inyección de dependencias y capa transversal:
+Se ha diseñado un contenedor en la capa Transversal encargado de instanciar las factorías, los repositorios y los servicios, resuelviendo el problema del alto acoplamiento.
+Al inyectar los repositorios en los servicios a través de sus constructores, garantizamos que la capa de Aplicación sea completamente independiente de la tecnología de base de datos (SQLite o Memoria). Además, centralizar esta creación (Composition Root) facilita enormemente la inyección de dobles de prueba (Mocks) en fases de testing
+
+- Patrón Page controller:
+En la capa de presentación se ha utilizado el framework Flask mediante el uso de Blueprints para agrupar los endpoints web por recurso (Auth, Pacientes, Procedimientos).
+Esta capa se encarga exclusivamente de extraer los datos de la red (JSON) y delegar la ejecución al Servicio correspondiente, aislando así a la lógica de negocio de la tecnología web.
+
 ---
 # 6. Implementación
 ## 6.1 Estructura del código

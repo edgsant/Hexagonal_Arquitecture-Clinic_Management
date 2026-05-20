@@ -22,3 +22,6 @@ poetry.lock
 # VPP
 *.lck
 *.bak_*
+
+# Variables de entorno y secretos
+.env

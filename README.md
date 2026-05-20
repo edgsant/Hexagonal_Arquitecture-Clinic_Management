@@ -209,7 +209,7 @@ las capas externas, mientras que las externas usan las funcionalidades ofrecidas
 
 ### 5.1.1 Responsabilidades de cada capa.
 
-- **Domain**: Esta capa se encarga de implementar la logica de negocio, siendo el corazon de la aplicacion y dependiendo de esta el resto de funcionalidades del sistema.
+- **Domain**: Esta capa se encarga de implementar la logica de negocio, siendo el corazon de la aplicacion y dependiendo de esta el resto de funcionalidades del sistema. Es una capa completamente independiente de la infraestructura: no busca entidades por identificador, no conoce la existencia de los repositorios ni gestiona el almacenamiento. Garantiza que el sistema siempre esté en un estado válido mediante entidades que protegen sus estados y aplican las reglas de negocio.
 
 - **Application**: Esta capa se encarga de implementar los requisitos funcionales y los casos de uso, siendo la capa de servicios que da acceso al dominio de nuestro sistema.
 
@@ -240,12 +240,20 @@ Para la implementación de nuestro sistema, al tener que realizar una selección
 - Patrón Domain Model:
 Se ha estructurado la capa de dominio acorde a la estructura hexagonal, encapsulando en la capa de dominio mediante clases de diseño interconectadas basadas en el modelo de dominio realizado, cada una con la responsabilidad de la lógica de negocio de su propia entidad equivalente del modelo de dominio y desacoplado de las capas de servicio e infraestructura.
 
+- Modelo de Dominio Rico y Navegabilidad Unidireccional:
+Se ha huido del antipatrón de "Modelo de Dominio Anémico". Nuestras entidades no son meros contenedores de datos, sino que poseen comportamiento (ej. Procedimiento.finalizar() comprueba que no haya analíticas pendientes).
+    - Qué problema resuelve: Evita que la lógica de negocio se filtre a los servicios de aplicación. Además, para evitar la sobrecarga de memoria al instanciar grandes grafos de objetos desde la base de datos, se ha diseñado una navegabilidad unidireccional estricta entre agregados (ej. Procedimiento conoce a su Paciente, pero Paciente no tiene una lista infinita de procedimientos).
+
+- Protección de fronteras mediante Inyección en Aplicación:
+    - Qué problema resuelve: Cumpliendo la directriz de mantener el dominio limpio de búsquedas , se ha decidido que sea la capa de Aplicación (Servicios) la única autorizada para interactuar con los repositorios. El servicio recupera los objetos completos de la base de datos y se los inyecta al Dominio (ej. inyectar el objeto Paciente en el constructor de Procedimiento), evitando acoplar el Dominio a IDs relacionales o léxico de persistencia.
+
 - Patrón Service Layer y Operation Script:
 Se ha organizado la capa de aplicación como una Service layer, diseñando una clase ServicioCasoDeUso por cada caso de uso, interpretando cada caso de uso como una transacción atómica donde cada clase de esta capa se encargará de orquestar las clases de dominio y las interfaces de los repositorios encargados de la persistencia para controlar el flujo de cada caso de uso, permitiendo que nuestro sistema pueda ofrecer sus funcionalidades a distintos tipos de clientes mediante la capa infraestructura y aportando una capa de abstracción para simplificar las operaciones de la capa de dominio. 
 
 - Patrón Repository:
 Se ha diseñado el acceso a los datos de la capa de persistencia mediante Repositorios e interfaces de dichos repositorios para aportar abstracción sobre el acceso a datos, ahora orientado al dominio, permitiendo que la capa aplicación solo dependa de la capa dominio y no dependa ni conozca el léxico de la capa infraestructura.
 Además, debido al alcance de la práctica, se ha aplicado el concepto de Aggregate Root, centralizando la persistencia en las entidades principales y evitando crear un repostiorio por entidad. De esta forma, se han diseñado 3 repositorios y sus respectivas interfaces que centralizan el acceso a los datos y proporcionan métodos oriantados al dominio, PacienteRepository, ProcedimientoRepository y UsuarioRepository.
+    - Qué problema resuelve: En lugar de crear un DAO tradicional con las 4 operaciones CRUD (Create, Read, Update, Delete) que acoplaría el diseño a una base de datos relacional, los repositorios simulan colecciones en memoria y exponen únicamente los métodos que exigen los casos de uso (ej. obtener_activo_por_paciente()). Se omite deliberadamente la operación Delete por reglas de negocio hospitalarias (los historiales no se borran) y el principio YAGNI.
 
 - Inyección de dependencias y capa transversal:
 Se ha diseñado un contenedor en la capa Transversal encargado de instanciar las factorías, los repositorios y los servicios, resuelviendo el problema del alto acoplamiento.

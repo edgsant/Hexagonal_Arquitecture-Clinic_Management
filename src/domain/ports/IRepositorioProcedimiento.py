@@ -8,21 +8,21 @@ class IRepositorioProcedimiento(ABC):
     """
     
     @abstractmethod
-    def guardar(self, procedimiento: Procedimiento) -> None:
+    def guardarProcedimiento(self, p: Procedimiento) -> None:
         pass
 
     @abstractmethod
-    def obtener_por_id(self, id: str) -> Procedimiento | None:
+    def obtenerProcedimientoPorID(self, id: str) -> Procedimiento | None:
         pass
 
     @abstractmethod
-    def obtener_activo_por_paciente(self, paciente_id: str) -> Procedimiento | None:
+    def obtenerActivoPorPaciente(self, idPaciente: str) -> Procedimiento | None:
         pass
 
     @abstractmethod
-    def obtener_todos_por_paciente(self, paciente_id: str) -> list[Procedimiento]:
+    def obtenerProcedimientosPorPaciente(self, idPaciente: str) -> list[Procedimiento]:
         pass
 
     @abstractmethod
-    def obtener_todos_activos(self) -> list[Procedimiento]:
+    def obtenerProcedimientosActivos(self) -> list[Procedimiento]:
         pass

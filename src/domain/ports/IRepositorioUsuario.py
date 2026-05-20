@@ -5,14 +5,16 @@ class IRepositorioUsuario(ABC):
     """Puerto de salida para recuperar usuarios."""
     
     @abstractmethod
-    def guardar(self, usuario: Usuario) -> None:
+    def obtenerPorEmailOUsername(self, identificador: str) -> Usuario | None:
+        """Solo busca por el identificador único de negocio (email o username)."""
         pass
 
     @abstractmethod
-    def obtener_por_id(self, id: str) -> Usuario | None:
+    def guardarUsuario(self, usuario: Usuario) -> None:
         pass
 
     @abstractmethod
-    def obtener_por_correo(self, correo: str) -> Usuario | None:
-        """Solo busca por el identificador único de negocio (email)."""
+    def obtenerPorId(self, id: str) -> Usuario | None:
         pass
+
+    

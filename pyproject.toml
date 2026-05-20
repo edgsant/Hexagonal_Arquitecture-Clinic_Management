@@ -13,6 +13,9 @@ dependencies = [
     "flask>=3.1.3",
     "flask-jwt-extended>=4.7.1",
     "psycopg2-binary>=2.9.9",  # Obligatorio: Persistencia externa (PostgreSQL) 
+    "sqlalchemy (>=2.0.49,<3.0.0)",
+    "dependency-injector (>=4.49.0,<5.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
 ]
 
 [tool.poetry]

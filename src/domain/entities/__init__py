@@ -1,0 +1,19 @@
+# /domain/entities/__init__.py
+
+# Importaciones relativas dentro de la misma carpeta de entidades
+from .EntityEspecialista import EntityEspecialista
+from .EntityUrologo import EntityUrologo
+from .EntityAnalistaClinico import EntityAnalistaClinico
+from .EntityUsuario import EntityUsuario
+from .EntityPaciente import EntityPaciente
+from .EntityProcedimiento import EntityProcedimiento
+# Nota: A medida que creéis el resto (EntityActoClinico, EntitySolicitud, etc.), las añadiríais aquí
+
+__all__ = [
+    'EntityEspecialista',
+    'EntityUrologo',
+    'EntityAnalistaClinico',
+    'EntityUsuario',
+    'EntityPaciente',
+    'EntityProcedimiento'
+]

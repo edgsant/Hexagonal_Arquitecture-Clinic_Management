@@ -1,5 +1,5 @@
 from domain.ports import IRepositorioUsuario
-from application.dtos.authDTOs import LoginRequestDTO, LoginResponseDTO
+from application.dtos.AuthDTOs import LoginRequestDTO, LoginResponseDTO
 
 class ServicioIniciarSesion:
     def __init__(self, repo_usuario: IRepositorioUsuario):

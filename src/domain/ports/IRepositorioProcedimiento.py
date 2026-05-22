@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from domain.entities.procedimiento import Procedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento
 
 class IRepositorioProcedimiento(ABC):
     """
@@ -8,21 +8,21 @@ class IRepositorioProcedimiento(ABC):
     """
     
     @abstractmethod
-    def guardarProcedimiento(self, p: Procedimiento) -> None:
+    def guardar_procedimiento(self, p: EntityProcedimiento) -> None:
         pass
 
     @abstractmethod
-    def obtenerProcedimientoPorID(self, id: str) -> Procedimiento | None:
+    def obtener_procedimiento_por_ID(self, id: str) -> EntityProcedimiento | None:
         pass
 
     @abstractmethod
-    def obtenerActivoPorPaciente(self, idPaciente: str) -> Procedimiento | None:
+    def obtener_activo_por_paciente(self, id_paciente: str) -> EntityProcedimiento | None:
         pass
 
     @abstractmethod
-    def obtenerProcedimientosPorPaciente(self, idPaciente: str) -> list[Procedimiento]:
+    def obtener_procedimientos_por_paciente(self, id_paciente: str) -> list[EntityProcedimiento]:
         pass
 
     @abstractmethod
-    def obtenerProcedimientosActivos(self) -> list[Procedimiento]:
+    def obtener_procedimientos_activos(self) -> list[EntityProcedimiento]:
         pass

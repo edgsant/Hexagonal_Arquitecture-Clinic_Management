@@ -45,18 +45,62 @@ def registrar_paciente():
 
 @blueprint_paciente.route("/pacientes/<id>/pocedimientos", methods=["GET"])
 @jwt_required()
-def obtener_procedimiento_paciente(id: str):
+def obtener_procedimientos_paciente(id: str):
+
+    claims = get_jwt()
+    rol_usuario = claims.get("rol")
     
+    if rol_usuario != "Urologo":
+        return jsonify({"error": "No tienes permisos (rol insuficiente) para realizar esta acción."}), 403
+
+    service = current_app.container.servicioConsultarProcedimiento()
+
+    try:
+        lista_dtos = service.consultar_procedimientos_paciente(id)
+        
+        return jsonify([
+            {
+                "id_procedimiento": dto.id_procedimiento,
+                "estado": dto.estado,
+                "paciente_id": dto.paciente_id,
+                "paciente_nombre_completo": dto.paciente_nombre_completo
+            }
+            for dto in lista_dtos
+        ]), 200
+
+    except (TypeError, ValueError) as e:
+        return jsonify({"error": f"Petición inválida: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor al procesar la consulta."}), 500
+
+
+@blueprint_paciente.route("/pacientes/<id>/procedimientos/activo", methods=["GET"])
+@jwt_required()
+def obtener_procedimiento_activo(id: str):
+    """
+    Busca si un paciente específico tiene un tratamiento/procedimiento clínico en curso actualmente.
+    """
     claims = get_jwt()
     rol_usuario = claims.get("rol")
   
     if rol_usuario != "Urologo":
         return jsonify({"error": "No tienes permisos (rol insuficiente) para realizar esta acción."}), 403
 
-    datos_json = request.get_json()
+    service = current_app.container.servicioConsultarProcedimiento()
 
-    if datos_json is None:
-        return jsonify({"error": "El body debe ser JSON"}), 400
-    
+    try:
+        dto_activo = service.consultar_procedimiento_activo_paciente(id)
+        
+        return jsonify({
+            "id_procedimiento": dto_activo.id_procedimiento,
+            "estado": dto_activo.estado,
+            "paciente_id": dto_activo.paciente_id,
+            "paciente_nombre_completo": dto_activo.paciente_nombre_completo
+        }), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor."}), 500
 
 

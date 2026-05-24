@@ -16,14 +16,7 @@ def login():
     if datos_json is None:
         return jsonify({"error": "El body debe ser JSON"}), 400
 
-    email = datos_json.get("email")
-    password = datos_json.get("password")
-    
-    dto = LoginRequestDTO(email=email, password=password)
-    
-    if not dto.identificador or not dto.password:
-        return jsonify({"error": "Faltan campos obligatorios: 'email' o 'contraseña'"}), 400
-
+    dto = LoginRequestDTO(**datos_jason)
     service = current_app.container.servicioIniciarSesion()
     service_response = service.login(dto)
 

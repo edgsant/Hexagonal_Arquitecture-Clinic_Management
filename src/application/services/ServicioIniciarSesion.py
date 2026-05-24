@@ -6,9 +6,6 @@ class ServicioIniciarSesion:
         self._repo_usuario = repo_usuario
 
     def login(self, peticion: LoginRequestDTO) -> LoginResponseDTO:
-        # 1. Validación temprana
-        if not peticion.identificador or not peticion.password:
-            raise ValueError("Credenciales incompletas.")
 
         # 2. Búsqueda
         usuario = self._repo_usuario.obtener_por_email_o_username(peticion.identificador)

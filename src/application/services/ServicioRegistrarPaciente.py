@@ -13,9 +13,6 @@ class ServicioRegistrarPaciente:
         self._repo_paciente = repo_paciente
 
     def registrar_paciente(self, peticion: RegistrarPacienteRequestDTO) -> PacienteResponseDTO:
-        # 1. Validación de campos obligatorios básicos
-        if not peticion.dni:
-            raise ValueError("El DNI es un campo obligatorio.")
             
         # 2. Regla de negocio / Infraestructura: Evitar duplicados
         if self._repo_paciente.obtener_por_dni(peticion.dni):

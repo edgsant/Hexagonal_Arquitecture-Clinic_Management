@@ -25,9 +25,9 @@ def crear_app():
 
     JWTManager(app)
 
-    app.register_blueprint(auth_bp, url_prefix="/auth")
-    app.register_blueprint(paciente_bp, url_prefix="/pacientes")
-    app.register_blueprint(procedimiento_bp, url_prefix="/procedimientos")
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(paciente_bp)
+    app.register_blueprint(procedimiento_bp)
 
     @app.route('/health')
     def health():

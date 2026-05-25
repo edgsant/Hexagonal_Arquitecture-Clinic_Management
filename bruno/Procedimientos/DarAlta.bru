@@ -6,16 +6,19 @@ meta {
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
 }
 
 patch {
-  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/alta
-  body:json {
-    {
-      "procedimiento_id": "{{procedimiento_id}}",
-      "estado": "{{procedimiento_estado}}",
-      "paciente_id": "{{paciente_id}}",
-      "paciente_nombre_completo": "{{paciente_nombre_completo}}"
-    }
+  url: {{baseUrl}}/procedimientos/proc1/alta
+
+}
+
+body:json {
+  {
+    "procedimiento_id": "proc1",
+    "estado": "Activo",
+    "paciente_id": "pac1",  
+    "paciente_nombre_completo": "Juan Pérez García"
   }
 }

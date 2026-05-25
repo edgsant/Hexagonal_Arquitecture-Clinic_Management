@@ -5,5 +5,9 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/pacientes/{{id}}/procedimientos
+  url: {{baseUrl}}/pacientes/pac1/procedimientos
+}
+
+headers {
+  Authorization: Bearer {{jwt_token}}
 }

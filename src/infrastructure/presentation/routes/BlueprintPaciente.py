@@ -2,9 +2,9 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt
 from application.dtos.PacienteDTOs import RegistrarPacienteRequestDTO
 
-blueprint_paciente = Blueprint("paciente", __name__)
+paciente_bp = Blueprint("paciente", __name__)
 
-@blueprint_paciente.route("/pacientes", methods=["POST"])
+@paciente_bp.route("/pacientes", methods=["POST"])
 @jwt_required()
 def registrar_paciente():
     """
@@ -44,7 +44,7 @@ def registrar_paciente():
     
 
 
-@blueprint_paciente.route("/pacientes/<id>/pocedimientos", methods=["GET"])
+@paciente_bp.route("/pacientes/<id>/pocedimientos", methods=["GET"])
 @jwt_required()
 def obtener_procedimientos_paciente(id: str):
 
@@ -75,7 +75,7 @@ def obtener_procedimientos_paciente(id: str):
         return jsonify({"error": "Error interno del servidor al procesar la consulta."}), 500
 
 
-@blueprint_paciente.route("/pacientes/<id>/procedimientos/activo", methods=["GET"])
+@paciente_bp.route("/pacientes/<id>/procedimientos/activo", methods=["GET"])
 @jwt_required()
 def obtener_procedimiento_activo(id: str):
     """

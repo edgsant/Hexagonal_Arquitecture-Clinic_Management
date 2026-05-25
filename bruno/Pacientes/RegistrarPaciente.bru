@@ -10,15 +10,16 @@ post {
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
 }
 
 body:json {
   {
-      "dni": "{{dni}}",
-      "nombre": "{{nombre}}",
-      "apellidos": "{{apellidos}}",
-      "fecha_nacimiento": "{{fecha_nacimiento}}",
-      "direccion": "{{direccion}}",
-      "telefono": "{{telefono}}"
+      "dni": "33333333Z",
+      "nombre": "Ana",
+      "apellidos": "Gómez Ruiz",
+      "fecha_nacimiento": "1978-04-12",
+      "direccion": "Calle Nueva 10, Madrid",
+      "telefono": "640333333"
   }
 }

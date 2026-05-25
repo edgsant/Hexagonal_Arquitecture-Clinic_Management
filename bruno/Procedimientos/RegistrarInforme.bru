@@ -6,20 +6,21 @@ meta {
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
 }
 
 post {
-  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/informes
+  url: {{baseUrl}}/procedimientos/proc1/informes
 }
 
 body:json {
   {
-    "procedimiento_id": "{{procedimiento_id}}",
-    "especialista_id": "{{especialista_id}}",
-    "fecha": "{{fecha}}",
-    "antecedentes": "{{antecedentes}}",
-    "sintomas": "{{sintomas}}",
-    "antecedentes_familiares": "{{antecedentes_familiares}}",
-    "exploracion_fisica": "{{exploracion_fisica}}"
+    "procedimiento_id": "proc1",
+    "especialista_id": "esp1",
+    "fecha": "2026-05-25",
+    "antecedentes": "Paciente con antecedentes de hipertensión leve.",
+    "sintomas": "Molestias leves al orinar.",
+    "antecedentes_familiares": "Ninguno relevante.",
+    "exploracion_fisica": "Palpación de próstata sin hallazgos graves."
   }
 }

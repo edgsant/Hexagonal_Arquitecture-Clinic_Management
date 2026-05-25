@@ -2,34 +2,26 @@ from datetime import date
 from werkzeug.security import generate_password_hash
 from transversal.container import Container
 from transversal.config import Config
+from infrastructure.presentation.app import crear_app
 from domain.entities.EntityPaciente import EntityPaciente
 from domain.entities.EntityProcedimiento import EntityProcedimiento
 from domain.entities.EntityUsuario import EntityUsuario
-from domain.entities.EntityEspecialista import EntityEspecialista
 from domain.entities.EntityUrologo import EntityUrologo
 from domain.entities.EntityAnalistaClinico import EntityAnalistaClinico
 from domain.entities.EntityInformeInicial import EntityInformeInicial
 from domain.entities.EntityAnalitica import EntityAnalitica
 
-def main():
-    """
-    Función principal que demuestra el funcionamiento del sistema de clínica.
-    
-    Crea ejemplares de especialistas, usuarios, pacientes, procedimientos e informes
-    para poblar los repositorios en memoria y poder realizar consultas desde Bruno.
-    """
-    config = Config()
-    container = Container(config)
+
+def poblar_repositorios_en_memoria(container: Container):
+    config = container.config
     print(f"Usando repositorios: {config.tipoRepositorio.value}")
     if config.usaSQL():
         print(f"Base de datos: {config.db_url}")
-    
-    # Obtener repositorios
+
     repo_pacientes = container.factory.crearRepoPaciente()
     repo_procedimientos = container.factory.crearRepoProcedimiento()
     repo_usuarios = container.factory.crearRepoUsuario()
-    
-    # === CREAR ESPECIALISTAS ===
+
     especialista1 = EntityUrologo(
         id="esp1",
         nombre="Carlos García",
@@ -39,7 +31,7 @@ def main():
         direccion="Calle Principal 42, Madrid",
         telefono="600123456"
     )
-    
+
     especialista2 = EntityAnalistaClinico(
         id="esp2",
         nombre="María José",
@@ -52,8 +44,7 @@ def main():
     print(f"\nEspecialistas creados:")
     print(f"  - {especialista1.nombre} {especialista1.apellidos} (Urólogo)")
     print(f"  - {especialista2.nombre} {especialista2.apellidos} (Analista Clínico)")
-    
-    # === CREAR USUARIOS ===
+
     usuario1 = EntityUsuario(
         id="u1",
         email="carlos.garcia@clinica.com",
@@ -61,7 +52,7 @@ def main():
         password_hash=generate_password_hash("password123"),
         especialista=especialista1
     )
-    
+
     usuario2 = EntityUsuario(
         id="u2",
         email="maria.fernandez@clinica.com",
@@ -74,8 +65,7 @@ def main():
     print(f"\nUsuarios creados:")
     print(f"  - {usuario1.username} ({usuario1.email})")
     print(f"  - {usuario2.username} ({usuario2.email})")
-    
-    # === CREAR PACIENTES ===
+
     paciente1 = EntityPaciente(
         id="pac1",
         dni="11111111X",
@@ -85,7 +75,7 @@ def main():
         direccion="Calle Secundaria 8, Madrid",
         telefono="620111111"
     )
-    
+
     paciente2 = EntityPaciente(
         id="pac2",
         dni="22222222Y",
@@ -100,13 +90,12 @@ def main():
     print(f"\nPacientes creados:")
     print(f"  - {paciente1.nombre} {paciente1.apellidos} (DNI: {paciente1.dni})")
     print(f"  - {paciente2.nombre} {paciente2.apellidos} (DNI: {paciente2.dni})")
-    
-    # === CREAR PROCEDIMIENTOS ===
+
     procedimiento1 = EntityProcedimiento(
         id="proc1",
         paciente=paciente1
     )
-    
+
     procedimiento2 = EntityProcedimiento(
         id="proc2",
         paciente=paciente2
@@ -116,8 +105,7 @@ def main():
     print(f"\nProcedimientos creados:")
     print(f"  - Procedimiento {procedimiento1.id} para {paciente1.nombre} (Estado: {procedimiento1.estado.value})")
     print(f"  - Procedimiento {procedimiento2.id} para {paciente2.nombre} (Estado: {procedimiento2.estado.value})")
-    
-    # === CREAR INFORMES INICIALES ===
+
     informe1 = EntityInformeInicial(
         id="inf1",
         fecha=date.today(),
@@ -127,7 +115,7 @@ def main():
         exploracion_fisica="Próstata aumentada de tamaño",
         autor=especialista1
     )
-    
+
     informe2 = EntityInformeInicial(
         id="inf2",
         fecha=date.today(),
@@ -137,19 +125,17 @@ def main():
         exploracion_fisica="Normalidad relativa",
         autor=especialista1
     )
-    # Los informes se asociarían a los procedimientos internamente
     print(f"\nInformes iniciales creados:")
     print(f"  - Informe {informe1.id} por {especialista1.nombre}")
     print(f"  - Informe {informe2.id} por {especialista1.nombre}")
-    
-    # === CREAR ANALÍTICAS ===
+
     analitica1 = EntityAnalitica(
         id="anal1",
         fecha=date.today(),
         especialistas=[especialista2],
         pendiente=True
     )
-    
+
     analitica2 = EntityAnalitica(
         id="anal2",
         fecha=date.today(),
@@ -159,8 +145,22 @@ def main():
     print(f"\nAnalíticas creadas:")
     print(f"  - Analítica {analitica1.id} (Pendiente)")
     print(f"  - Analítica {analitica2.id} (Pendiente)")
-    
+
     print(f"\n✓ Repositorios poblados y listos para consultas desde Bruno.")
+
+
+def main():
+    config = Config()
+    container = Container(config)
+    poblar_repositorios_en_memoria(container)
+
+    app = crear_app()
+    app.container = container
+
+    print("\nServidor Flask iniciado en http://127.0.0.1:5000")
+    print("Manteniendo los repositorios en memoria activos mientras Flask esté en ejecución.")
+    app.run(host="localhost", port=5000, debug=True)
+
 
 if __name__ == "__main__":
     main()

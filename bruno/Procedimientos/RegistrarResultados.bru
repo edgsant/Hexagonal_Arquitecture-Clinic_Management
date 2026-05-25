@@ -6,25 +6,26 @@ meta {
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
 }
 
 post {
-  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/analiticas
+  url: {{baseUrl}}/procedimientos/proc1/analiticas
 }
 
 body:json {
   {
-    "procedimiento_id": "{{procedimiento_id}}",
-    "analitica_id": "{{analitica_id}}",
-    "especialista_id": "{{especialista_id}}",
-    "psa": "{{psa}}",
-    "leucocitos": "{{leucocitos}}",
-    "hemoglobina": "{{hemoglobina}}",
-    "hematocrito": "{{hematocrito}}",
-    "plaquetas": "{{plaquetas}}",
-    "creatinina": "{{creatinina}}",
-    "glucosa": "{{glucosa}}",
-    "colesterol": "{{colesterol}}",
-    "observaciones": "{{observaciones}}"
+    "procedimiento_id": "proc1",
+    "analitica_id": "anal1",
+    "especialista_id": "esp2",
+    "psa": "4.2",
+    "leucocitos": "6500",
+    "hemoglobina": "14.1",
+    "hematocrito": "42.0",
+    "plaquetas": "230000",
+    "creatinina": "0.9",
+    "glucosa": "92",
+    "colesterol": "180",
+    "observaciones": "Valores dentro del rango normal."
   }
 }

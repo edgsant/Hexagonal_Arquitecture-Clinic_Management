@@ -10,11 +10,12 @@ post {
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
 }
 
 body:json {
   {
-    "id": "{{id}}",
-    "paciente": "{{paciente}}"
+    "id": "proc2",
+    "paciente": "pac2"
   }
 }

@@ -4,9 +4,9 @@ from flask_jwt_extended import jwt_required, get_jwt
 from application.dtos.InformeDTOs import RegistrarInformeRequestDTO
 from application.dtos.AnaliticaDTOs import RegistrarResultadosRequestDTO
 
-blueprint_procedimiento = Blueprint("procedimiento", __name__)
+procedimiento_bp = Blueprint("procedimiento", __name__)
 
-@blueprint_procedimiento.route("/procedimientos", methods=["POST"])
+@procedimiento_bp.route("/procedimientos", methods=["POST"])
 @jwt_required()
 def crear_procedimiento():
 
@@ -36,7 +36,7 @@ def crear_procedimiento():
     except Exception:
         return jsonify({"error": "Error interno del servidor."}), 500
 
-@blueprint_procedimiento.route("/procedimientos/<id>", methods=["GET"])
+@procedimiento_bp.route("/procedimientos/<id>", methods=["GET"])
 @jwt_required()
 def consultar_procedimiento(id: str):
 
@@ -63,7 +63,7 @@ def consultar_procedimiento(id: str):
         return jsonify({"error": "Error interno del servidor."}), 500
 
 
-@blueprint_procedimiento.route("/procedimientos/<id>/informes", methods=["POST"])
+@procedimiento_bp.route("/procedimientos/<id>/informes", methods=["POST"])
 @jwt_required()
 def registrar_informe(id: str):
 
@@ -99,7 +99,7 @@ def registrar_informe(id: str):
         return jsonify({"error": "Error interno al guardar el informe."}), 500
 
 
-@blueprint_procedimiento.route("/procedimientos/<id>/analiticas", methods=["POST"])
+@procedimiento_bp.route("/procedimientos/<id>/analiticas", methods=["POST"])
 @jwt_required()
 def registrar_resultados(id: str):
 
@@ -135,7 +135,7 @@ def registrar_resultados(id: str):
         return jsonify({"error": "Error interno al procesar los resultados analíticos."}), 500
 
 
-@blueprint_procedimiento.route("/procedimientos/<id>/alta", methods=["PATCH"])
+@procedimiento_bp.route("/procedimientos/<id>/alta", methods=["PATCH"])
 @jwt_required()
 def dar_alta(id: str):
     claims = get_jwt()

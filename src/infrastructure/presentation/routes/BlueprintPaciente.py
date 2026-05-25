@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt
+from application.dtos.PacienteDTOs import RegistrarPacienteRequestDTO
 
 blueprint_paciente = Blueprint("paciente", __name__)
 

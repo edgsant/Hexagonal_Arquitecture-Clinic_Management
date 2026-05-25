@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import create_access_token
-
-from application.excepciones import CredencialesInvalidas
-
+from application.dtos.AuthDTOs import LoginRequestDTO
 auth_bp = Blueprint("auth", __name__)
 
 
@@ -16,7 +14,7 @@ def login():
     if datos_json is None:
         return jsonify({"error": "El body debe ser JSON"}), 400
 
-    dto = LoginRequestDTO(**datos_jason)
+    dto = LoginRequestDTO(**datos_json)
     service = current_app.container.servicioIniciarSesion()
     service_response = service.login(dto)
 

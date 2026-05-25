@@ -1,4 +1,4 @@
-from ..domain.EntityProcedimiento import EntityProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento
 
 
 class RepositorioProcedimientoMem:
@@ -33,10 +33,11 @@ class RepositorioProcedimientoMem:
 
         self.procedimientos_por_id[procedimiento.id] = procedimiento
 
-        if procedimiento.id_paciente not in self.procedimientos_por_paciente:
-            self.procedimientos_por_paciente[procedimiento.id_paciente] = []
+        paciente_id = procedimiento.paciente.id
+        if paciente_id not in self.procedimientos_por_paciente:
+            self.procedimientos_por_paciente[paciente_id] = []
 
-        self.procedimientos_por_paciente[procedimiento.id_paciente].append(procedimiento)
+        self.procedimientos_por_paciente[paciente_id].append(procedimiento)
 
     def obtener_procedimiento_por_id(self, id: str):
         """

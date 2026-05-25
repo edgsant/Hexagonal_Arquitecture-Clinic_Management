@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
-from ..domain.EntityProcedimiento import EntityProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento
 
 
 Base = declarative_base()
@@ -97,8 +97,8 @@ class RepositorioProcedimientoSQLAlchemy:
                 modelo = self._a_modelo(procedimiento)
                 session.add(modelo)
             else:
-                modelo_existente.id_paciente = procedimiento.id_paciente
-                modelo_existente.activo = procedimiento.activo
+                modelo_existente.id_paciente = procedimiento.paciente.id
+                modelo_existente.activo = procedimiento.estado.value
 
             session.commit()
 

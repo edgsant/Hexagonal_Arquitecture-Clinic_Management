@@ -1,13 +1,13 @@
-from transversal.Config import Config
-from transversal.Factory import Factory
+from transversal.config import Config
+from transversal.factory import Factory
 
-from application.ServicioIniciarSesion import ServicioIniciarSesion
-from application.ServicioRegistrarPaciente import ServicioRegistrarPaciente
-from application.ServicioCrearProcedimiento import ServicioCrearProcedimiento
-from application.ServicioRegistrarInforme import ServicioRegistrarInforme
-from application.ServicioRegistrarResultados import ServicioRegistrarResultados
-from application.ServicioConsultarProcedimiento import ServicioConsultarProcedimiento
-from application.ServicioDarAlta import ServicioDarAlta
+from application.services.ServicioIniciarSesion import ServicioIniciarSesion
+from application.services.ServicioRegistrarPaciente import ServicioRegistrarPaciente
+from application.services.ServicioCrearProcedimiento import ServicioCrearProcedimiento
+from application.services.ServicioRegistrarInforme import ServicioRegistrarInforme
+from application.services.ServicioRegistrarResultados import ServicioRegistrarResultados
+from application.services.ServicioConsultarProcedimiento import ServicioConsultarProcedimiento
+from application.services.ServicioDarAlta import ServicioDarAlta
 
 
 class Container:

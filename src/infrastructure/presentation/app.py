@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-from presentation.auth_blueprint import auth_bp
-from presentation.paciente_blueprint import paciente_bp
-from presentation.procedimiento_blueprint import procedimiento_bp
-from dotenv import load_dotenv
+from presentation.routes.BlueprintAuth import auth_bp
+from presentation.routes.BlueprintPaciente import paciente_bp
+from presentation.routes.BlueprintProcedimiento import procedimiento_bp
+from dotenv import load_dotenv, os
 
 
 def crear_app():

@@ -80,5 +80,4 @@ class ServicioRegistrarInforme:
             informe_id=nuevo_informe.id,
             procedimiento_id=procedimiento.id,
             fecha=nuevo_informe.fecha,
-            mensaje="Informe, consulta y solicitud de analítica registrados correctamente."
         )

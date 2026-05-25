@@ -1,5 +1,9 @@
 import pytest
+from unittest.mock import Mock, MagicMock
 from datetime import date
+from werkzeug.security import generate_password_hash
+
+# ============ DTOs Fixtures ============
 
 @pytest.fixture
 def datos_paciente_request():
@@ -72,3 +76,129 @@ def datos_analitica_response():
         "colesterol": "185 mg/dL",
         "observaciones": "Resultados validados y enviados a presentación."
     }
+
+# ============ Domain Entities Mocks ============
+
+@pytest.fixture
+def paciente_mock():
+    """Mock de EntityPaciente para tests de servicios."""
+    from domain.entities.EntityPaciente import EntityPaciente
+    paciente = MagicMock(spec=EntityPaciente)
+    paciente.id = "pac-456-uuid"
+    paciente.dni = "12345678A"
+    paciente.nombre = "Alejandro"
+    paciente.apellidos = "Sanz"
+    paciente.fecha_nacimiento = date(1985, 10, 12)
+    paciente.direccion = "Calle de la Salud 4"
+    paciente.telefono = "611223344"
+    return paciente
+
+@pytest.fixture
+def especialista_mock():
+    """Mock de EntityEspecialista (médico/urólogo)."""
+    from domain.entities.EntityEspecialista import EntityEspecialista
+    especialista = MagicMock(spec=EntityEspecialista)
+    especialista.id = "esp-urologo-1"
+    especialista.nombre = "Dr. Juan"
+    especialista.apellidos = "García"
+    especialista.especialidad = "Urología"
+    return especialista
+
+@pytest.fixture
+def usuario_mock(especialista_mock):
+    """Mock de EntityUsuario con credenciales válidas."""
+    from domain.entities.EntityUsuario import EntityUsuario
+    usuario = MagicMock(spec=EntityUsuario)
+    usuario.id = "user-uuid-1"
+    usuario.email = "juan.garcia@clinica.es"
+    usuario.username = "urologo_usuario"
+    usuario.password_hash = generate_password_hash("PasswordSegura123")
+    
+    # Métodos del usuario
+    usuario.validar_credenciales = MagicMock(return_value=True)
+    usuario.obtener_datos = MagicMock(return_value=especialista_mock)
+    
+    return usuario
+
+@pytest.fixture
+def procedimiento_mock(paciente_mock):
+    """Mock de EntityProcedimiento (expediente clínico activo)."""
+    from domain.entities.EntityProcedimiento import EntityProcedimiento, EstadoProcedimiento
+    procedimiento = MagicMock(spec=EntityProcedimiento)
+    procedimiento.id = "proc-999"
+    procedimiento.paciente = paciente_mock
+    
+    # Estado del procedimiento (Enum real)
+    procedimiento.estado = EstadoProcedimiento.ACTIVO
+    
+    # Métodos del procedimiento
+    procedimiento.obtener_pruebas_pendientes = MagicMock(return_value=[])
+    procedimiento.vincular_informe = MagicMock()
+    procedimiento.registrar_acto_clinico = MagicMock()
+    procedimiento.finalizar = MagicMock()
+    
+    return procedimiento
+
+@pytest.fixture
+def analitica_mock():
+    """Mock de EntityAnalitica (prueba dentro de un procedimiento)."""
+    from domain.entities.EntityAnalitica import EntityAnalitica
+    analitica = MagicMock(spec=EntityAnalitica)
+    analitica.id = "an-888"
+    analitica.pendiente = True
+    analitica.psa = ""
+    analitica.leucocitos = ""
+    analitica.hemoglobina = ""
+    analitica.hematocrito = ""
+    analitica.plaquetas = ""
+    analitica.creatinina = ""
+    analitica.glucosa = ""
+    analitica.colesterol = ""
+    analitica.observaciones = ""
+    
+    # Método para registrar resultados
+    def registrar_resultados_side_effect(**kwargs):
+        analitica.psa = kwargs.get("psa", "")
+        analitica.leucocitos = kwargs.get("leucocitos", "")
+        analitica.hemoglobina = kwargs.get("hemoglobina", "")
+        analitica.hematocrito = kwargs.get("hematocrito", "")
+        analitica.plaquetas = kwargs.get("plaquetas", "")
+        analitica.creatinina = kwargs.get("creatinina", "")
+        analitica.glucosa = kwargs.get("glucosa", "")
+        analitica.colesterol = kwargs.get("colesterol", "")
+        analitica.observaciones = kwargs.get("observaciones", "")
+        analitica.pendiente = False
+    
+    analitica.registrar_resultados = MagicMock(side_effect=registrar_resultados_side_effect)
+    
+    return analitica
+
+# ============ Repository Mocks ============
+
+@pytest.fixture
+def repo_paciente_mock():
+    """Mock de IRepositorioPaciente."""
+    repo = MagicMock()
+    repo.obtener_por_id = MagicMock(return_value=None)
+    repo.obtener_por_dni = MagicMock(return_value=None)
+    repo.guardar_paciente = MagicMock()
+    return repo
+
+@pytest.fixture
+def repo_usuario_mock():
+    """Mock de IRepositorioUsuario."""
+    repo = MagicMock()
+    repo.obtener_por_email_o_username = MagicMock(return_value=None)
+    repo.obtener_por_especialista_id = MagicMock(return_value=None)
+    return repo
+
+@pytest.fixture
+def repo_procedimiento_mock():
+    """Mock de IRepositorioProcedimiento."""
+    repo = MagicMock()
+    repo.obtener_por_id = MagicMock(return_value=None)
+    repo.obtener_activo_por_paciente = MagicMock(return_value=None)
+    repo.obtener_procedimientos_por_paciente = MagicMock(return_value=[])
+    repo.guardar_procedimiento = MagicMock()
+    repo.guardar = MagicMock()
+    return repo

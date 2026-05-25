@@ -266,17 +266,87 @@ Esta capa se encarga exclusivamente de extraer los datos de la red (JSON) y dele
 ---
 # 6. Implementación
 ## 6.1 Estructura del código
-Explicación de carpetas.
+(Explicación de carpetas.)
+Se ha estructurado el codigo que implementa nuestro sistema con una estructura similar a la estructura hexagonal:
+
+
+dias2526-foxtrot/
+├── bruno/
+│   └── nose                    # Punto de entrada de la aplicación (Levanta Flask y el Container)
+├── docs/                       
+│   ├── diagramas/              # Diagramas UML en formato .png y .svg (Dominio, BCE, Secuencia, Arquitectura y Diseño)
+│   ├── requisitos/             # Documentos de análisis de requisitos inicial
+│   └── src/                    # Código fuente de los diagramas realizados en Visual Paradigm
+├── src/                        # Código fuente del sistema (Arquitectura Hexagonal)
+│   ├── application/            # Capa de Aplicación (Orquestación de Casos de Uso)
+│   │   ├── dtos/               
+│   │   └── services/           
+│   ├── domain/                 # Capa de Dominio (Corazón del negocio)
+│   │   ├── entities/           
+│   │   └── ports/              
+│   ├── infrastructure/         # Capa de Infraestructura (Adaptadores externos)
+│   │   ├── persistence/        
+│   │   └── presentation/       
+│   └── transversal/            # Capa Transversal (Utilidades transversales)
+│       ├── config.py     
+│       ├── container.py        
+│       └── factory.py
+├── tests/                      # Carpeta general para las pruebas automatizadas (Pytest)
+│   ├── application/            
+│   ├── domain/                 
+│   └── infrastructure/         
+├── pyproject.toml              # Configuración de librerías y dependencias (Poetry)
+└── README.md                   # Documentación principal del repositorio
+
+
 ## 6.2 Tecnologías
-Lenguaje, librerías, herramientas.
-## 6.3 Descripción
-Cómo se ha implementado la funcionalidad.
+
+Para el desarrollo de este proyecto se ha seleccionado un conjunto de tecnologías y herramientas usadas en las prácticas individuales que nos permiten el desarrollo e implementación de la Arquitectura Hexagonal y sus pruebas automatizas:
+
+**Lenguaje y entorno**
+* **Python:** Lenguaje principal del proyecto debido a su gran variedad de librerías. Se ha hecho un uso intensivo del tipado estático (*Type Hinting*) y del decorador nativo `@dataclass` para modelar las entidades de dominio y los DTOs puramente orientado a objetos.
+* **Poetry:** Utilizado como gestor de dependencias y de entornos virtuales. 
+
+**Frameworks y Librerías**
+* **Flask:** Framework utilizado en la capa de Presentación como acceso a la web (Adaptador HTTP), implementando el patrón *Page Controller* mediante el uso de *Blueprints*.
+* **flask-jwt-extended:** Extensión para la autenticación y autorización en la capa Presentación.
+* **Dependency Injector:** Librería encargada de gestionar la Inyección de Dependencias en la capa Transversal (el *Composition Root* del sistema). Su uso ha sido vital para instanciar repositorios y servicios, permitiendo un alto nivel de desacoplamiento y facilitando la inyección de dobles de prueba (*mocks*) cuando es necesario.
+* **SQLAlchemy:** Herramienta ORM utilizada en la capa de Infraestructura (Persistencia) que nos permite mapear las entidades a tablas de la base de datos relacional.
+* **Python-dotenv:** Librería encargada de cargar variables de entorno desde archivos .env. Se ejecuta en el punto de entrada de la aplicación (main.py) para gestionar configuraciones sensibles (como URIs de bases de datos o claves secretas) de forma segura.
+
+**Pruebas y Calidad del Código**
+* **Pytest:** Framework seleccionado para la implementación y ejecución de la batería de pruebas automatizadas. Se ha escogido por su legibilidad, su aserciones nativas directas (`assert`) y su potente sistema de *fixtures*, idóneo para inyectar estados iniciales en los tests de los casos de uso.
+
+**Herramientas de Desarrollo y Diseño**
+* **Git y GitLab:** Utilizados para el control de versiones y el trabajo colaborativo, aplicando una estrategia de ramas (*Feature Branches*) y revisiones por pares mediante *Merge Requests* para asegurar la calidad antes de la integración.
+* **Visual Paradigm:** Herramienta CASE empleada durante los flujos de Análisis y Diseño para la elaboración y mantenimiento de toda la documentación visual mediante diagramas UML (casos de uso, modelo de dominio, diagramas de secuencia y diseño arquitectónico).
+
+## 6.3 Descripción de la Implementación
+
+Dado que la estructura de clases refleja fielmente el diseño arquitectónico planteado en el apartado 5, la implementación de los casos de uso sigue un flujo de trabajo estandarizado y unidireccional. A continuación se describe el ciclo de vida real de una petición dentro del sistema, tomando como ejemplo los flujos de creación (ej. Registrar Paciente o Iniciar Sesión):
+
+**1. Recepción y enrutamiento (Capa de Presentación)**
+Las peticiones HTTP son capturadas por los *Blueprints* de Flask. El objetivo de esta capa se ha mantenido lo más fino posible: el *Blueprint* se limita a extraer el cuerpo de la petición (JSON) y verificar que el formato sea válido. No contiene lógica de negocio ni comprobaciones de campos específicos.
+
+**2. Validación estructural (Capa de Aplicación - DTOs)**
+Para evitar sobrecargar los servicios y aplicar el principio *Fail Fast* (fallar rápido), los datos extraídos se inyectan inmediatamente en un *Data Transfer Object* (DTO) de entrada específico para cada caso de uso (ej. `LoginRequestDTO`). El método `__post_init__` de estos DTOs es el encargado de realizar la validación temprana de los datos (comprobar nulos, strings vacíos y tipos correctos). Si el DTO es inválido, se lanza una excepción que Flask captura para devolver un error HTTP 400.
+
+**3. Orquestación y Lógica (Capa de Aplicación - Servicios)**
+Una vez construido el DTO válido, se pasa al Servicio correspondiente (ej. `ServicioIniciarSesion`). Al recibir un DTO garantizado estructuralmente, el servicio se centra puramente en orquestar el caso de uso: interactúa con los repositorios para recuperar datos previos, invoca métodos de las entidades del dominio si es necesario aplicar reglas de negocio, y devuelve un DTO de salida o lanza excepciones de negocio (ej. `UsuarioNoEncontradoException`).
+
+**4. Reglas de Negocio (Capa de Dominio)**
+Las Entidades del dominio (ej. `EntityPaciente`) son agnósticas a la red y a la base de datos. Se han implementado utilizando el decorador `@dataclass`. En esta capa reside la lógica intrínseca, asegurando en su instanciación que no existan estados inválidos según las normativas del hospital.
+
+**5. Persistencia y Mapeo (Capa de Infraestructura)**
+Los Repositorios Reales implementan las interfaces del dominio utilizando SQLAlchemy. Para mantener el dominio puro, se ha implementado un sistema de mapeo manual interno (`_a_entidad` y `_a_modelo`) dentro de cada repositorio. Cuando el servicio pide un dato, el repositorio consulta la base de datos mediante su `Model` de SQLAlchemy, lo mapea a una `Entity` pura del dominio y se lo devuelve al servicio, garantizando la total independencia tecnológica del núcleo.
+
 ## 6.4 Ejecución
 ### Instalación
 ```bash
 poetry install
 poetry run python -m app.main #Este es un ejemplo
 ```
+
 # 7. Pruebas
 ## 7.1 Estrategia
 Qué se prueba y por qué.
@@ -287,12 +357,32 @@ Descripción breve.
 poetry run pytest # Esto es un ejemplo
 ```
 ## 7.4 Cobertura (opcional)
+
+
 # 8. Trazabilidad
 | **Caso de uso** | **Dominio** | **Análisis** | **Diseño** | **Código** | **Test** |
 | ------------- | ----------- | ------------ | ---------- | ---------- | -------------- |
-| CUxx | Clase X | Secuencia Y | Servicio Z | modulo.py | test_modulo.py |
+| CUxx          | Clase X       | Secuencia Y | Servicio Z | modulo.py | test_modulo.py |
+| **CU01 - Iniciar Sesión** | `Usuario`, `Especialista` | Diagrama de secuencia - CU01 | `ServicioIniciarSesion` | `ServicioIniciarSesion.py`, `AuthDTOs.py`, `EntityUsuario.py`, `EntityEspecialista.py` | `test_ServicioIniciarSesion.py` |
+| **CU02 - Registrar paciente** | `Paciente` | Diagrama de Secuencia - CU02 | `ServicioRegistrarPaciente` | `ServicioRegistrarPaciente.py`, `PacienteDTOs.py`, `EntityPaciente.py` | `test_ServicioRegistrarPaciente.py` |
+| **CU03 - Crear procedimiento clínico** | `Paciente`, `Procedimiento` | Diagrama de secuencia - CU03 | `ServicioCrearProcedimiento` | `ServicioCrearProcedimiento.py`, `ProcedimientoDTOs.py`, `EntityPaciente.py`, `EntityProcedimiento.py` | `test_ServicioCrearProcedimiento.py` |
+| **CU04 - Registrar informe clínico inicial** | `Paciente`, `Procedimiento`, `InformeInicial`, `Consulta` | Diagrama de secuencia - CU04 | `ServicioRegistrarInformeInicial` | `ServicioRegistrarInformeInicial.py`, `InformeDTOs.py`, `EntityProcedimiento.py`, `EntityInformeInicial.py`, `EntityConsulta.py` | `test_ServicioRegistrarInformeInicial.py` |
+| **CU05 - Registrar resultados de analítica** | `Procedimiento`, `Analitica` | Diagrama de Secuencia - CU05 | `ServicioRegistrarResultados` | `ServicioRegistrarResultados.py`, `AnaliticaDTOs.py`, `EntityProcedimiento.py`, `EntityAnalitica.py` | `test_ServicioRegistrarResultados.py` |
+| **CU06 - Consultar procedimiento clínico** | `Procedimiento` | Diagrama de Secuencia - CU06 | `ServicioConsultarProcedimiento` | `ServicioConsultarProcedimiento.py`, `ProcedimientoDTOs.py`, `EntityProcedimiento.py` | `test_ServicioConsultarProcedimiento.py` |
+| **CU07 - Dar de alta un paciente** | `Procedimiento` | Diagrama de Secuencia - CU07 | `ServicioDarDeAlta` | `ServicioDarDeAlta.py`, `ProcedimientoDTOs.py`, `EntityProcedimiento.py` | `test_ServicioDarDeAlta.py` |
+
 # 9. Planificación
-Explicar cómo se ha organizado el trabajo durante las 8 semanas.
+(Explicar cómo se ha organizado el trabajo durante las 8 semanas.)
+Nos hemos organizado siguiendo la planificación orientativa para las 8 semanas y documentando todo poco a poco:
+- Semanas 1-2, Inicio y dominio
+En las primeras semanas nos dedicamos a la lectura del documento y análisis inicial, configuración básica del proyecto en Git y la realización del diagrama del modelo de dominio
+- Semanas 3-4, BCE y Secuencia
+En las semanas 3-4 nos dedicamos a reconocer las entidades del dominio que actuaban en cada caso de uso y los diagramas de secuencia de nuestros 7 casos de uso a implementar
+- Semanas 5-6, diagrama de paquetes y diagrama de diseño
+En las semanas 5-6 se decidieron la estructura y los patrones para la implementación de nuestro sistema y se realizaron el diagrama de paquetes y el diagrama de clases de diseño
+- Semanas 7-8, implementación y tests
+En las semanas 7-8 nos dedicamos a la implementación del diagrama de clases de diseño en código python y los tests de los mismos
+
 # 10. Conclusiones
 - Dificultades
 - Decisiones

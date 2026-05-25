@@ -1,0 +1,30 @@
+meta {
+  name: Registrar Resultados de Analíticas
+  type: http
+  seq: 1
+}
+
+headers {
+  Content-Type: application/json
+}
+
+post {
+  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/analiticas
+}
+
+body:json {
+  {
+    "procedimiento_id": "{{procedimiento_id}}",
+    "analitica_id": "{{analitica_id}}",
+    "especialista_id": "{{especialista_id}}",
+    "psa": "{{psa}}",
+    "leucocitos": "{{leucocitos}}",
+    "hemoglobina": "{{hemoglobina}}",
+    "hematocrito": "{{hematocrito}}",
+    "plaquetas": "{{plaquetas}}",
+    "creatinina": "{{creatinina}}",
+    "glucosa": "{{glucosa}}",
+    "colesterol": "{{colesterol}}",
+    "observaciones": "{{observaciones}}"
+  }
+}

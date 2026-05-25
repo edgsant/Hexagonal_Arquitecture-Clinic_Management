@@ -1,0 +1,21 @@
+meta {
+  name: Dar Alta
+  type: http
+  seq: 1
+}
+
+headers {
+  Content-Type: application/json
+}
+
+patch {
+  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/alta
+  body:json {
+    {
+      "procedimiento_id": "{{procedimiento_id}}",
+      "estado": "{{procedimiento_estado}}",
+      "paciente_id": "{{paciente_id}}",
+      "paciente_nombre_completo": "{{paciente_nombre_completo}}"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Registrar Paciente
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/pacientes
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+      "dni": "{{dni}}",
+      "nombre": "{{nombre}}",
+      "apellidos": "{{apellidos}}",
+      "fecha_nacimiento": "{{fecha_nacimiento}}",
+      "direccion": "{{direccion}}",
+      "telefono": "{{telefono}}"
+  }
+}

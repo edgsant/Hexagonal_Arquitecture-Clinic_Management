@@ -1,0 +1,25 @@
+meta {
+  name: Registrar Informe
+  type: http
+  seq: 1
+}
+
+headers {
+  Content-Type: application/json
+}
+
+post {
+  url: {{baseUrl}}/procedimientos/{{procedimiento_id}}/informes
+}
+
+body:json {
+  {
+    "procedimiento_id": "{{procedimiento_id}}",
+    "especialista_id": "{{especialista_id}}",
+    "fecha": "{{fecha}}",
+    "antecedentes": "{{antecedentes}}",
+    "sintomas": "{{sintomas}}",
+    "antecedentes_familiares": "{{antecedentes_familiares}}",
+    "exploracion_fisica": "{{exploracion_fisica}}"
+  }
+}

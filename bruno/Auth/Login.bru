@@ -8,6 +8,12 @@ post {
   url: {{baseUrl}}/login
 }
 
+script:post-response {
+  if (res.status === 200 && res.body.access_token) {
+    bru.setGlobalEnvVar("jwt_token", res.body.access_token);
+  }
+}
+
 headers {
   Content-Type: application/json
 }
@@ -16,11 +22,5 @@ body:json {
   {
     "identificador": "cgarcia",
     "password": "password123"
-  }
-}
-
-script:post-response {
-  if (res.status === 200 && res.body.access_token) {
-    bru.setGlobalEnvVar("jwt_token", res.body.access_token);
   }
 }​

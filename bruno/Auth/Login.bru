@@ -8,13 +8,6 @@ post {
   url: {{baseUrl}}/login
 }
 
-script:post-response {
-  if (res.body.access_token) {
-    console.log("Login successful, JWT token obtained.");
-    bru.setEnvVar("jwt_token", res.body.access_token);
-  } else console.log("Login failed, no access token received.");
-}
-
 headers {
   Content-Type: application/json
 }
@@ -24,4 +17,13 @@ body:json {
     "identificador": "cgarcia",
     "password": "password123"
   }
-}​
+}
+
+script:post-response {
+  if (res.body.access_token) {
+    bru.setEnvVar("jwt_token", res.body.access_token);
+    console.log("Login successful, JWT token obtained.");
+  } else {
+    console.log("Login failed, no access token received.");
+  }
+}

@@ -44,7 +44,7 @@ def registrar_paciente():
     
 
 
-@paciente_bp.route("/pacientes/<id>/pocedimientos", methods=["GET"])
+@paciente_bp.route("/pacientes/<id>/procedimientos", methods=["GET"])
 @jwt_required()
 def obtener_procedimientos_paciente(id: str):
 

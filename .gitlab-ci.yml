@@ -6,6 +6,7 @@ cache:
     - .venv
 
 variables:
+  # Esto soluciona los problemas de importación indicando que la raíz del código es 'src'
   PYTHONPATH: "src"
 
 before_script:
@@ -16,6 +17,7 @@ before_script:
 stages:
   - test
 
+# Este trabajo ejecutará pytest automáticamente en cada push o Merge Request
 ejecutar_tests:
   stage: test
   script:

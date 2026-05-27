@@ -35,7 +35,6 @@ class InformeResponseDTO:
     informe_id: str
     procedimiento_id: str
     fecha: date
-    mensaje: str
 
     def __post_init__(self):
         if not isinstance(self.informe_id, str) or not self.informe_id.strip():
@@ -44,5 +43,3 @@ class InformeResponseDTO:
             raise ValueError("El campo 'procedimiento_id' debe ser un string válido.")
         if not isinstance(self.fecha, date):
             raise TypeError("El campo 'fecha' debe ser de tipo datetime.date.")
-        if not isinstance(self.mensaje, str) or not self.mensaje.strip():
-            raise ValueError("El campo 'mensaje' debe ser un string válido.")

@@ -157,7 +157,6 @@ def registrar_informe(id: str):
             "informe_id": dto_salida.informe_id,
             "procedimiento_id": dto_salida.procedimiento_id,
             "fecha": dto_salida.fecha.isoformat(),
-            "mensaje": dto_salida.mensaje
         }), 201
     
     except (TypeError, ValueError) as e:

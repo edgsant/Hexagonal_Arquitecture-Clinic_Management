@@ -1,0 +1,44 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "maria.fernandez@clinica.com",
+    "password": "password456"
+  }
+}
+
+script:post-response {
+  // Solo intentamos extraer el token si la petición fue un éxito total (HTTP 200 o 201)
+  if ((res.status === 200 || res.status === 201) && res.body && res.body.access_token) {
+    bru.setEnvVar("jwt_token_analista", res.body.access_token);
+    console.log("Login exitoso. Token guardado en el entorno Local.");
+  } else {
+    console.log("Fallo en el Login. Revisa las credenciales o el estado del servidor.");
+  }
+}
+
+tests {
+  test("El código de estado debe ser 200 OK (o 201)", function() {
+    expect(res.getStatus() === 200 || res.getStatus() === 201).to.be.true;
+  });
+
+  test("La respuesta debe contener un access_token", function() {
+    const datos = res.getBody();
+    expect(datos).to.have.property('access_token');
+    expect(datos.access_token).to.be.a('string');
+  });
+}

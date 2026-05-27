@@ -146,6 +146,13 @@ def poblar_repositorios_en_memoria(container: Container):
     print(f"  - Analítica {analitica1.id} (Pendiente)")
     print(f"  - Analítica {analitica2.id} (Pendiente)")
 
+    # 1. Metemos el informe y la analítica dentro del procedimiento 1
+    procedimiento1.vincular_informe(informe1)
+    procedimiento1.registrar_acto_clinico(analitica1)
+    
+    # 2. Actualizamos el procedimiento en el repositorio para que guarde los cambios
+    repo_procedimientos.guardar_procedimiento(procedimiento1)
+
     print(f"\n✓ Repositorios poblados y listos para consultas desde Bruno.")
 
 

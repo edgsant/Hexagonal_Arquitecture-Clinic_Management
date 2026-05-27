@@ -128,7 +128,7 @@ def registrar_informe(id: str):
 def registrar_resultados(id: str):
 
     claims = get_jwt()
-    if claims.get("rol") != "Analista":
+    if claims.get("rol") != "AnalistaClinico":
         return jsonify({"error": "No autorizado. Solo el personal de laboratorio puede registrar analíticas."}), 403
 
     datos_json = request.get_json()
@@ -137,7 +137,7 @@ def registrar_resultados(id: str):
 
     # Inyectamos de forma transparente los datos de contexto obligatorios
     datos_json["procedimiento_id"] = id
-    datos_json["especialista_id"] = claims.get("especialista_id")
+    datos_json["especialista_id"] = claims.get("sub")
 
     service = current_app.container.servicioRegistrarResultados()
 
@@ -155,9 +155,15 @@ def registrar_resultados(id: str):
     
     except (TypeError, ValueError) as e:
         return jsonify({"error": f"Datos biomédicos inválidos: {str(e)}"}), 400
-    except Exception:
-        return jsonify({"error": "Error interno al procesar los resultados analíticos."}), 500
-
+    except Exception as e:
+        import traceback
+        traceback.print_exc() 
+        
+        return jsonify({
+            "error": "Error interno al procesar los resultados analíticos.",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
 
 @procedimiento_bp.route("/procedimientos/<id>/alta", methods=["PATCH"])
 @jwt_required()
@@ -181,5 +187,12 @@ def dar_alta(id: str):
     
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
-    except Exception:
-        return jsonify({"error": "Error interno al procesar el alta médica."}), 500
+    except Exception as e:
+        import traceback
+        traceback.print_exc() 
+        
+        return jsonify({
+            "error": "Error interno al procesar el alta médica.",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500

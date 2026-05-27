@@ -108,10 +108,11 @@ def obtener_procedimiento_activo(id: str):
     """
     claims = get_jwt()
     rol_usuario = claims.get("rol")
-  
-    if rol_usuario != "Urologo":
-        return jsonify({"error": "No tienes permisos (rol insuficiente) para realizar esta acción."}), 403
-
+    roles_medicos_permitidos = ["Urologo", "AnalistaClinico"]
+    
+    if rol_usuario not in roles_medicos_permitidos:
+        return jsonify({"error": "Acceso denegado. Se requiere perfil de especialista médico."}), 403
+    
     service = current_app.container.servicioConsultarProcedimiento()
 
     try:

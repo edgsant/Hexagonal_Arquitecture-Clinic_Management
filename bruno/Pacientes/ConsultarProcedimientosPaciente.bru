@@ -11,3 +11,15 @@ get {
 headers {
   Authorization: Bearer {{jwt_token}}
 }
+
+tests {
+  test("El código de estado debe ser 200 OK", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("La respuesta debe ser una lista (Array) de procedimientos", function() {
+    const data = res.getBody();
+    expect(data).to.be.an('array');
+    expect(data.length).to.be.greaterThan(0); // Sabemos que pac1 tiene el proc1
+  });
+}

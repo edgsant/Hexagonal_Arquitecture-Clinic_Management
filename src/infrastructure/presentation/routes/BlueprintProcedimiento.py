@@ -70,8 +70,58 @@ def consultar_procedimiento(id: str):
     
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
-    except Exception:
-        return jsonify({"error": "Error interno del servidor."}), 500
+    except Exception as e:
+        # Imprime la traza en la terminal de VS Code
+        import traceback
+        traceback.print_exc() 
+        
+        # Devuelve el error real a Bruno
+        return jsonify({
+            "error": "Error interno del servidor",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
+    
+@procedimiento_bp.route("/procedimientos/activos", methods=["GET"])
+@jwt_required()
+def consultar_procedimientos_activos():
+
+    claims = get_jwt()
+    rol_usuario = claims.get("rol")
+    roles_medicos_permitidos = ["Urologo", "AnalistaClinico"]
+    
+    if rol_usuario not in roles_medicos_permitidos:
+        return jsonify({"error": "Acceso denegado. Se requiere perfil de especialista médico."}), 403
+
+    service = current_app.container.servicioConsultarProcedimiento()
+
+    try:
+
+        lista_dtos = service.consultar_procedimientos_activos()
+
+        return jsonify([
+            {
+                "id_procedimiento": dto.id_procedimiento,
+                "estado": dto.estado,
+                "paciente_id": dto.paciente_id,
+                "paciente_nombre_completo": dto.paciente_nombre_completo
+            }
+            for dto in lista_dtos
+        ]), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        # Imprime la traza en la terminal de VS Code
+        import traceback
+        traceback.print_exc() 
+        
+        # Devuelve el error real a Bruno
+        return jsonify({
+            "error": "Error interno del servidor",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
 
 
 @procedimiento_bp.route("/procedimientos/<id>/informes", methods=["POST"])

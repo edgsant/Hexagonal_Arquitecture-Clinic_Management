@@ -15,7 +15,7 @@ class ServicioConsultarProcedimiento:
     def consultar_procedimiento(self, id_procedimiento: str) -> ProcedimientoResponseDTO:
         """Devuelve el detalle completo de un procedimiento por su ID (CU06)."""
         # 1. Búsqueda a través del puerto
-        procedimiento = self._repo_procedimiento.obtener_por_id(id_procedimiento)
+        procedimiento = self._repo_procedimiento.obtener_procedimiento_por_id(id_procedimiento)
         if not procedimiento:
             raise ValueError(f"No se encontró ningún procedimiento clínico con el ID: {id_procedimiento}")
 
@@ -29,6 +29,22 @@ class ServicioConsultarProcedimiento:
             paciente_id=paciente.id,
             paciente_nombre_completo=f"{paciente.nombre} {paciente.apellidos}"
         )
+    
+    def consultar_procedimientos_activos(self) -> list[ProcedimientoResponseDTO]:
+        """Devuelve la lista de procedimientos activos (CU06)."""
+        # 1. Búsqueda a través del puerto
+        procedimientos = self._repo_procedimiento.obtener_procedimientos_activos()
+        
+        # 2. Transformamos la lista de entidades en una lista de DTOs limpios utilizando una list comprehension
+        return [
+            ProcedimientoResponseDTO(
+                id_procedimiento=p.id,
+                estado=p.estado.value,
+                paciente_id=p.paciente.id,
+                paciente_nombre_completo=f"{p.paciente.nombre} {p.paciente.apellidos}"
+            )
+            for p in procedimientos
+        ]
 
     def consultar_procedimientos_paciente(self, id_paciente: str) -> list[ProcedimientoResponseDTO]:
         """RF04: Permite consultar el historial completo de procedimientos de un paciente."""

@@ -37,7 +37,15 @@ class RepositorioProcedimientoMem:
         if paciente_id not in self.procedimientos_por_paciente:
             self.procedimientos_por_paciente[paciente_id] = []
 
-        self.procedimientos_por_paciente[paciente_id].append(procedimiento)
+        # Comprobamos si el procedimiento ya está en la lista del paciente
+        lista_paciente = self.procedimientos_por_paciente[paciente_id]
+        for i, p in enumerate(lista_paciente):
+            if p.id == procedimiento.id:
+                # Si ya existe, lo actualizamos y cortamos la ejecución
+                lista_paciente[i] = procedimiento
+                return
+
+        lista_paciente.append(procedimiento)
 
     def obtener_procedimiento_por_id(self, id: str):
         """

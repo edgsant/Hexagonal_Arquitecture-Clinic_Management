@@ -1,0 +1,26 @@
+meta {
+  name: Consultar Procedimientos Activos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/procedimientos/activos
+}
+
+headers {
+  Authorization: Bearer {{jwt_token}}
+}
+
+tests {
+  test("El código de estado debe ser 200 OK", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Debe devolver la lista de procedimientos activos", function() {
+    const data = res.getBody();
+    expect(data).to.be.an('array');
+    // Ajusta esto según la estructura de tu DTO:
+    expect(data[0].id_procedimiento || data[0].id).to.equal("proc1");
+  });
+}

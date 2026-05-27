@@ -17,7 +17,7 @@ headers {
 
 body:json {
   {
-    "id_paciente": "pac2" 
+    "id_paciente": "{{id_paciente_nuevo}}"
   }
 }
 
@@ -29,6 +29,6 @@ tests {
   test("La respuesta debe ser un JSON válido que contenga el ID del procedimiento", function() {
     const datos = res.getBody();
     expect(datos).to.be.an('object');
-    expect(datos).to.have.property('id');
+    expect(datos).to.have.property('id_procedimiento');
   });
 }

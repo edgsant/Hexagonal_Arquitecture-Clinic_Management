@@ -26,7 +26,7 @@ def crear_procedimiento():
 
         return jsonify({
             "id_procedimiento": dto_salida.id_procedimiento,
-            "estado": dto_salida.estado.name,
+            "estado": dto_salida.estado,
             "paciente_id": dto_salida.paciente_id,
             "paciente_nombre_completo": dto_salida.paciente_nombre_completo
         }), 201

@@ -26,6 +26,15 @@ body:json {
   }
 }
 
+script:post-response {
+  // Verificamos que la petición haya sido un éxito antes de intentar sacar datos
+  if (res.status === 201 || res.status === 200) {
+    // Guardamos el ID en una variable dinámica llamada "id_paciente_nuevo"
+    bru.setEnvVar("id_paciente_nuevo", res.body.paciente.id);
+    console.log("ID del nuevo paciente automatizado: " + res.body.paciente.id);
+  }
+}
+
 tests {
   test("El código de estado debe ser 201 Created (o 200 OK)", function() {
     // Las creaciones de recursos deberían devolver 201, pero aceptamos 200 por si acaso

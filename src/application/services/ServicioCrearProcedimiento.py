@@ -1,6 +1,7 @@
 import uuid
-from domain.ports import IRepositorioPaciente, IRepositorioProcedimiento
-from domain.entities import EntityProcedimiento
+from domain.ports.IRepositorioPaciente import IRepositorioPaciente
+from domain.ports.IRepositorioProcedimiento import IRepositorioProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento
 from application.dtos.ProcedimientoDTOs import ProcedimientoResponseDTO
 
 class ServicioCrearProcedimiento:

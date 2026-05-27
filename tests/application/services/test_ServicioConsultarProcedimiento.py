@@ -9,7 +9,7 @@ class TestServicioConsultarProcedimiento:
     def test_consultar_procedimiento_exitoso(self, repo_procedimiento_mock, procedimiento_mock):
         """Debe consultar un procedimiento existente exitosamente."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         
         servicio = ServicioConsultarProcedimiento(repo_procedimiento_mock)
 
@@ -25,7 +25,7 @@ class TestServicioConsultarProcedimiento:
     def test_consultar_procedimiento_falla_no_existe(self, repo_procedimiento_mock):
         """Debe lanzar ValueError si el procedimiento no existe."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = None
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = None
         
         servicio = ServicioConsultarProcedimiento(repo_procedimiento_mock)
 

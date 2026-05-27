@@ -13,7 +13,7 @@ class TestServicioRegistrarResultados:
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = [analitica_mock]
         repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
-        repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
+        repo_usuario_mock.obtener_por_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarResultadosRequestDTO(**datos_analitica_validos)
@@ -26,7 +26,7 @@ class TestServicioRegistrarResultados:
         assert respuesta.analista_id == "esp-urologo-1"
         assert respuesta.psa == "1.4 ng/mL"
         assert respuesta.pendiente is False
-        assert repo_procedimiento_mock.guardar.called
+        assert repo_procedimiento_mock.guardar_procedimiento.called
         analitica_mock.registrar_resultados.assert_called_once()
 
     def test_registrar_resultados_falla_procedimiento_no_existe(self, datos_analitica_validos,
@@ -71,7 +71,7 @@ class TestServicioRegistrarResultados:
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = [analitica_mock]
         repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
-        repo_usuario_mock.obtener_por_especialista_id.return_value = None
+        repo_usuario_mock.obtener_por_id.return_value = None
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarResultadosRequestDTO(**datos_analitica_validos)
@@ -89,7 +89,7 @@ class TestServicioRegistrarResultados:
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = []  # Sin análiticas pendientes
         repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
-        repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
+        repo_usuario_mock.obtener_por_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarResultadosRequestDTO(**datos_analitica_validos)

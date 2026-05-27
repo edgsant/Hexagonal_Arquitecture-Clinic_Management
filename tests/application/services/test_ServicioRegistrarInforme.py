@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 from application.dtos.InformeDTOs import RegistrarInformeRequestDTO
 from application.services.ServicioRegistrarInforme import ServicioRegistrarInforme
+from domain.entities.EntityEspecialista import EntityEspecialista
 
 
 class TestServicioRegistrarInforme:
@@ -12,7 +13,7 @@ class TestServicioRegistrarInforme:
         """Debe registrar un informe exitosamente cuando el procedimiento existe y está activo."""
         # Arrange
         repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
-        repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
+        repo_usuario_mock.obtener_por_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarInformeRequestDTO(**datos_informe_validos)
@@ -24,7 +25,7 @@ class TestServicioRegistrarInforme:
         assert respuesta.informe_id is not None
         assert respuesta.procedimiento_id == "proc-999"
         assert respuesta.fecha == datos_informe_validos["fecha"]
-        assert repo_procedimiento_mock.guardar.called
+        assert repo_procedimiento_mock.guardar_procedimiento.called
 
     def test_registrar_informe_falla_procedimiento_no_existe(self, datos_informe_validos, 
                                                              repo_procedimiento_mock, repo_usuario_mock):
@@ -67,7 +68,7 @@ class TestServicioRegistrarInforme:
         """Debe lanzar ValueError si el especialista no existe."""
         # Arrange
         repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
-        repo_usuario_mock.obtener_por_especialista_id.return_value = None
+        repo_usuario_mock.obtener_por_id.return_value = None
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarInformeRequestDTO(**datos_informe_validos)

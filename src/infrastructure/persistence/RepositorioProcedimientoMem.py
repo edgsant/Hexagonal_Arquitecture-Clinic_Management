@@ -1,4 +1,4 @@
-from domain.entities.EntityProcedimiento import EntityProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento, EstadoProcedimiento
 
 
 class RepositorioProcedimientoMem:
@@ -66,7 +66,7 @@ class RepositorioProcedimientoMem:
         procedimientos = self.procedimientos_por_paciente.get(id_paciente, [])
 
         for procedimiento in procedimientos:
-            if procedimiento.activo:
+            if procedimiento.estado == EstadoProcedimiento.ACTIVO:
                 return procedimiento
 
         return None
@@ -95,7 +95,7 @@ class RepositorioProcedimientoMem:
         procedimientos_activos = []
 
         for procedimiento in self.procedimientos_por_id.values():
-            if procedimiento.activo:
+            if procedimiento.estado == EstadoProcedimiento.ACTIVO:
                 procedimientos_activos.append(procedimiento)
 
         return procedimientos_activos

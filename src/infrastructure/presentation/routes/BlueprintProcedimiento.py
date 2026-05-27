@@ -26,15 +26,24 @@ def crear_procedimiento():
 
         return jsonify({
             "id_procedimiento": dto_salida.id_procedimiento,
-            "estado": dto_salida.estado,
+            "estado": dto_salida.estado.name,
             "paciente_id": dto_salida.paciente_id,
             "paciente_nombre_completo": dto_salida.paciente_nombre_completo
         }), 201
     
     except (TypeError, ValueError) as e:
         return jsonify({"error": str(e)}), 400
-    except Exception:
-        return jsonify({"error": "Error interno del servidor."}), 500
+    except Exception as e:
+        # Imprime la traza en la terminal de VS Code
+        import traceback
+        traceback.print_exc() 
+        
+        # Devuelve el error real a Bruno
+        return jsonify({
+            "error": "Error interno del servidor",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
 
 @procedimiento_bp.route("/procedimientos/<id>", methods=["GET"])
 @jwt_required()

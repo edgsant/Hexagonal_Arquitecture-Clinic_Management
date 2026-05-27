@@ -6,6 +6,8 @@ meta {
 
 post {
   url: {{baseUrl}}/procedimientos
+  body: json
+  auth: none
 }
 
 headers {
@@ -15,6 +17,18 @@ headers {
 
 body:json {
   {
-    "id_paciente": "pac2"
+    "id_paciente": "pac2" 
   }
+}
+
+tests {
+  test("El código de estado debe ser 201 Created (o 200 OK)", function() {
+    expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;
+  });
+
+  test("La respuesta debe ser un JSON válido que contenga el ID del procedimiento", function() {
+    const datos = res.getBody();
+    expect(datos).to.be.an('object');
+    expect(datos).to.have.property('id');
+  });
 }

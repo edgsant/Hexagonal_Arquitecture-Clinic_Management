@@ -1,4 +1,4 @@
-from ..domain.EntityPaciente import EntityPaciente
+from domain.entities.EntityPaciente import EntityPaciente
 
 class RepositorioPacienteMem:
     """

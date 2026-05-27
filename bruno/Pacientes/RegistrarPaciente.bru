@@ -1,0 +1,51 @@
+meta {
+  name: Registrar Paciente
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/pacientes
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
+}
+
+body:json {
+  {
+    "dni": "33333333Z",
+    "nombre": "Ana",
+    "apellidos": "Gómez Ruiz",
+    "fecha_nacimiento": "1978-04-12",
+    "direccion": "Calle Nueva 10, Madrid",
+    "telefono": "640333333"
+  }
+}
+
+script:post-response {
+  // Verificamos que la petición haya sido un éxito antes de intentar sacar datos
+  if (res.status === 201 || res.status === 200) {
+    // Guardamos el ID en una variable dinámica llamada "id_paciente_nuevo"
+    bru.setEnvVar("id_paciente_nuevo", res.body.paciente.id);
+    console.log("ID del nuevo paciente automatizado: " + res.body.paciente.id);
+  }
+}
+
+tests {
+  test("El código de estado debe ser 201 Created (o 200 OK)", function() {
+    // Las creaciones de recursos deberían devolver 201, pero aceptamos 200 por si acaso
+    expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;
+  });
+
+  test("La respuesta debe ser un JSON válido", function() {
+    const datos = res.getBody();
+    expect(datos).to.be.an('object');
+    
+    // Opcional: Si tu API devuelve el ID del paciente recién creado, puedes testearlo así:
+    // expect(datos).to.have.property('id');
+  });
+}

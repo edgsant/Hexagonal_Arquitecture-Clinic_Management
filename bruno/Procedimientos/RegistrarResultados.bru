@@ -1,0 +1,43 @@
+meta {
+  name: Registrar Resultados de Analíticas
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/procedimientos/proc1/analiticas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{jwt_token_analista}}
+}
+
+body:json {
+  {
+    "analitica_id": "anal1",
+    "psa": "4.2",
+    "leucocitos": "6500",
+    "hemoglobina": "14.1",
+    "hematocrito": "42.0",
+    "plaquetas": "230000",
+    "creatinina": "0.9",
+    "glucosa": "92",
+    "colesterol": "180",
+    "observaciones": "Valores dentro del rango normal."
+  }
+}
+
+tests {
+  test("El código de estado debe ser 201 Created (o 200 OK)", function() {
+    expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;
+  });
+
+  test("La respuesta debe ser un JSON válido que contenga el ID", function() {
+    const datos = res.getBody();
+    expect(datos).to.be.an('object');
+    expect(datos).to.have.property('analitica_id');
+  });
+}

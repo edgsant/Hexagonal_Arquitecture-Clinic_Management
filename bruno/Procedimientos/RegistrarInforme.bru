@@ -1,0 +1,38 @@
+meta {
+  name: Registrar Informe
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/procedimientos/{{id_procedimiento_nuevo}}/informes
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{jwt_token}}
+}
+
+body:json {
+  {
+    "fecha": "2026-05-25",
+    "antecedentes": "Paciente con antecedentes de hipertensión leve.",
+    "sintomas": "Molestias leves al orinar.",
+    "antecedentes_familiares": "Ninguno relevante.",
+    "exploracion_fisica": "Palpación de próstata sin hallazgos graves."
+  }
+}
+
+tests {
+  test("El código de estado debe ser 201 Created (o 200 OK)", function() {
+    expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;
+  });
+
+  test("La respuesta debe ser un JSON válido que contenga el ID del informe", function() {
+    const datos = res.getBody();
+    expect(datos).to.be.an('object');
+    expect(datos).to.have.property('informe_id');
+  });
+}

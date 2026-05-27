@@ -1,10 +1,11 @@
+import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
-
-from presentation.auth_blueprint import auth_bp
-from presentation.paciente_blueprint import paciente_bp
-from presentation.procedimiento_blueprint import procedimiento_bp
 from dotenv import load_dotenv
+
+from .routes.BlueprintAuth import auth_bp
+from .routes.BlueprintPaciente import paciente_bp
+from .routes.BlueprintProcedimiento import procedimiento_bp
 
 
 def crear_app():
@@ -24,9 +25,9 @@ def crear_app():
 
     JWTManager(app)
 
-    app.register_blueprint(auth_bp, url_prefix="/auth")
-    app.register_blueprint(paciente_bp, url_prefix="/pacientes")
-    app.register_blueprint(procedimiento_bp, url_prefix="/procedimientos")
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(paciente_bp)
+    app.register_blueprint(procedimiento_bp)
 
     @app.route('/health')
     def health():

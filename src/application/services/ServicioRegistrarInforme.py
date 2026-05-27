@@ -1,12 +1,10 @@
 import uuid
 from domain.ports import IRepositorioProcedimiento
 from domain.ports.IRepositorioUsuario import IRepositorioUsuario # Necesario para sacar al Especialista
-from domain.entities import (
-    EntityInformeInicial, 
-    EntityConsulta, 
-    EntitySolicitud, 
-    EntityAnalitica, 
-)
+from domain.entities.EntityInformeInicial import EntityInformeInicial 
+from domain.entities.EntityConsulta import EntityConsulta
+from domain.entities.EntitySolicitud import EntitySolicitud
+from domain.entities.EntityAnalitica import EntityAnalitica
 from domain.entities.EntityProcedimiento import EstadoProcedimiento
 from application.dtos.InformeDTOs import RegistrarInformeRequestDTO, InformeResponseDTO
 
@@ -21,7 +19,7 @@ class ServicioRegistrarInforme:
 
     def registrar_informe(self, peticion: RegistrarInformeRequestDTO) -> InformeResponseDTO:
         # 1. Recuperamos el Agregado (Procedimiento)
-        procedimiento = self._repo_procedimiento.obtener_por_id(peticion.procedimiento_id)
+        procedimiento = self._repo_procedimiento.obtener_procedimiento_por_id(peticion.procedimiento_id)
         if not procedimiento:
             raise ValueError("Procedimiento no encontrado.")
             
@@ -29,7 +27,7 @@ class ServicioRegistrarInforme:
             raise ValueError("No se pueden añadir informes a un procedimiento finalizado.")
 
         # 2. Recuperamos al Especialista (Autor)
-        usuario = self._repo_usuario.obtener_por_especialista_id(peticion.especialista_id)
+        usuario = self._repo_usuario.obtener_por_id(peticion.especialista_id)
         if not usuario:
             raise ValueError("Especialista no autorizado o no encontrado.")
         autor = usuario.obtener_datos() # Obtenemos el EntityEspecialista real
@@ -75,7 +73,7 @@ class ServicioRegistrarInforme:
         procedimiento.registrar_acto_clinico(nueva_analitica)
 
         # 5. GUARDAMOS EL ESTADO GLOBAL
-        self._repo_procedimiento.guardar(procedimiento)
+        self._repo_procedimiento.guardar_procedimiento(procedimiento)
 
         # 6. RETORNAMOS EL DTO DE ÉXITO
         return InformeResponseDTO(

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from ..domain.EntityUsuario import EntityUsuario
+from domain.entities.EntityUsuario import EntityUsuario
 
 
 Base = declarative_base()

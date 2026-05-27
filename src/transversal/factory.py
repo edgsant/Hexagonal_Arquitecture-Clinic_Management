@@ -1,15 +1,15 @@
-from transversal.Config import Config
+from transversal.config import Config
 
 from domain.ports.IRepositorioProcedimiento import IRepositorioProcedimiento
 from domain.ports.IRepositorioPaciente import IRepositorioPaciente
 from domain.ports.IRepositorioUsuario import IRepositorioUsuario
 
 from infrastructure.persistence.RepositorioProcedimientoMem import RepositorioProcedimientoMem
-from infrastructure.persistence.RepositorioProcedimientoSQL import RepositorioProcedimientoSQL
+from infrastructure.persistence.RepositorioProcedimientoSQL import RepositorioProcedimientoSQLAlchemy
 from infrastructure.persistence.RepositorioPacienteMem import RepositorioPacienteMem
-from infrastructure.persistence.RepositorioPacienteSQL import RepositorioPacienteSQL
+from infrastructure.persistence.RepositorioPacienteSQL import RepositorioPacienteSQLAlchemy
 from infrastructure.persistence.RepositorioUsuarioMem import RepositorioUsuarioMem
-from infrastructure.persistence.RepositorioUsuarioSQL import RepositorioUsuarioSQL
+from infrastructure.persistence.RepositorioUsuarioSQL import RepositorioUsuarioSQLAlchemy
 
 
 class Factory:
@@ -41,7 +41,7 @@ class Factory:
         """
         if self.__repoProcedimiento is None:
             if self.config.usaSQL():
-                self.__repoProcedimiento = RepositorioProcedimientoSQL(
+                self.__repoProcedimiento = RepositorioProcedimientoSQLAlchemy(
                     self.__obtenerDbUrl()
                 )
             else:
@@ -58,7 +58,7 @@ class Factory:
         """
         if self.__repoPaciente is None:
             if self.config.usaSQL():
-                self.__repoPaciente = RepositorioPacienteSQL(
+                self.__repoPaciente = RepositorioPacienteSQLAlchemy(
                     self.__obtenerDbUrl()
                 )
             else:
@@ -75,7 +75,7 @@ class Factory:
         """
         if self.__repoUsuario is None:
             if self.config.usaSQL():
-                self.__repoUsuario = RepositorioUsuarioSQL(
+                self.__repoUsuario = RepositorioUsuarioSQLAlchemy(
                     self.__obtenerDbUrl()
                 )
             else:

@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
-from ..domain.EntityProcedimiento import EntityProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento, EstadoProcedimiento
 
 
 Base = declarative_base()
@@ -54,11 +54,13 @@ class RepositorioProcedimientoSQLAlchemy:
 
         if modelo is None:
             return None
+        
+        estado_enum = EstadoProcedimiento.ACTIVO if modelo.activo else EstadoProcedimiento.FINALIZADO
 
         return EntityProcedimiento(
             id=modelo.id,
             id_paciente=modelo.id_paciente,
-            activo=modelo.activo
+            activo=estado_enum
         )
 
     def _a_modelo(self, procedimiento: EntityProcedimiento):
@@ -72,10 +74,12 @@ class RepositorioProcedimientoSQLAlchemy:
             Modelo ProcedimientoModel.
         """
 
+        es_activo = (procedimiento.estado == EstadoProcedimiento.ACTIVO)
+
         return ProcedimientoModel(
             id=procedimiento.id,
-            id_paciente=procedimiento.id_paciente,
-            activo=procedimiento.activo
+            id_paciente=procedimiento.paciente.id,
+            activo=es_activo
         )
 
     def guardar_procedimiento(self, procedimiento: EntityProcedimiento):
@@ -97,8 +101,8 @@ class RepositorioProcedimientoSQLAlchemy:
                 modelo = self._a_modelo(procedimiento)
                 session.add(modelo)
             else:
-                modelo_existente.id_paciente = procedimiento.id_paciente
-                modelo_existente.activo = procedimiento.activo
+                modelo_existente.id_paciente = procedimiento.paciente.id
+                modelo_existente.activo = (procedimiento.estado == EstadoProcedimiento.ACTIVO)
 
             session.commit()
 

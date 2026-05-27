@@ -15,7 +15,7 @@ class ServicioDarAlta:
     def finalizar_procedimiento(self, id_procedimiento: str) -> ProcedimientoResponseDTO:
         """CU07: Finaliza el procedimiento clínico (da de alta al paciente)."""
         
-        procedimiento = self._repo_procedimiento.obtener_por_id(id_procedimiento)
+        procedimiento = self._repo_procedimiento.obtener_procedimiento_por_id(id_procedimiento)
         if not procedimiento:
             raise ValueError(f"No se encontró ningún procedimiento clínico con el ID: {id_procedimiento}")
 

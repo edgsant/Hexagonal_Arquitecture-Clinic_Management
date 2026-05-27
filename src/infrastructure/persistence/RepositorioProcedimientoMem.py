@@ -1,4 +1,4 @@
-from ..domain.EntityProcedimiento import EntityProcedimiento
+from domain.entities.EntityProcedimiento import EntityProcedimiento, EstadoProcedimiento
 
 
 class RepositorioProcedimientoMem:
@@ -33,10 +33,19 @@ class RepositorioProcedimientoMem:
 
         self.procedimientos_por_id[procedimiento.id] = procedimiento
 
-        if procedimiento.id_paciente not in self.procedimientos_por_paciente:
-            self.procedimientos_por_paciente[procedimiento.id_paciente] = []
+        paciente_id = procedimiento.paciente.id
+        if paciente_id not in self.procedimientos_por_paciente:
+            self.procedimientos_por_paciente[paciente_id] = []
 
-        self.procedimientos_por_paciente[procedimiento.id_paciente].append(procedimiento)
+        # Comprobamos si el procedimiento ya está en la lista del paciente
+        lista_paciente = self.procedimientos_por_paciente[paciente_id]
+        for i, p in enumerate(lista_paciente):
+            if p.id == procedimiento.id:
+                # Si ya existe, lo actualizamos y cortamos la ejecución
+                lista_paciente[i] = procedimiento
+                return
+
+        lista_paciente.append(procedimiento)
 
     def obtener_procedimiento_por_id(self, id: str):
         """
@@ -65,7 +74,7 @@ class RepositorioProcedimientoMem:
         procedimientos = self.procedimientos_por_paciente.get(id_paciente, [])
 
         for procedimiento in procedimientos:
-            if procedimiento.activo:
+            if procedimiento.estado == EstadoProcedimiento.ACTIVO:
                 return procedimiento
 
         return None
@@ -94,7 +103,7 @@ class RepositorioProcedimientoMem:
         procedimientos_activos = []
 
         for procedimiento in self.procedimientos_por_id.values():
-            if procedimiento.activo:
+            if procedimiento.estado == EstadoProcedimiento.ACTIVO:
                 procedimientos_activos.append(procedimiento)
 
         return procedimientos_activos

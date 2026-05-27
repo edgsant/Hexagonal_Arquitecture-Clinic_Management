@@ -1,0 +1,25 @@
+meta {
+  name: Consultar Procedimiento activo
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/pacientes/pac1/procedimientos/activo
+}
+
+headers {
+  Authorization: Bearer {{jwt_token}}
+}
+
+tests {
+  test("El código de estado debe ser 200 OK", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Debe devolver un único procedimiento en estado activo", function() {
+    const data = res.getBody();
+    expect(data).to.be.an('object');
+    expect(data.estado).to.equal("Activo"); // Ajusta el string si usáis "ACTIVO" en mayúsculas
+  });
+}

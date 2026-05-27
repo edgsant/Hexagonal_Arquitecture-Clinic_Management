@@ -1,5 +1,5 @@
 from domain.ports import IRepositorioProcedimiento, IRepositorioUsuario
-from domain.entities import EntityAnalitica
+from domain.entities.EntityAnalitica import EntityAnalitica
 from domain.entities.EntityProcedimiento import EstadoProcedimiento
 from application.dtos.AnaliticaDTOs import RegistrarResultadosRequestDTO, AnaliticaResponseDTO
 
@@ -14,7 +14,7 @@ class ServicioRegistrarResultados:
 
     def registrar_resultados(self, peticion: RegistrarResultadosRequestDTO) -> AnaliticaResponseDTO:
         # 1. Recuperamos y validamos el Agregado
-        procedimiento = self._repo_procedimiento.obtener_por_id(peticion.procedimiento_id)
+        procedimiento = self._repo_procedimiento.obtener_procedimiento_por_id(peticion.procedimiento_id)
         if not procedimiento:
             raise ValueError("Procedimiento no encontrado.")
             
@@ -22,7 +22,7 @@ class ServicioRegistrarResultados:
             raise ValueError("No se puede modificar un procedimiento que ya está finalizado.")
 
         # 2. Recuperamos al Especialista (Analista Clínico)
-        usuario = self._repo_usuario.obtener_por_especialista_id(peticion.especialista_id)
+        usuario = self._repo_usuario.obtener_por_id(peticion.especialista_id)
         if not usuario:
             raise ValueError("Especialista no autorizado o no encontrado.")
         analista = usuario.obtener_datos()
@@ -54,7 +54,7 @@ class ServicioRegistrarResultados:
         )
 
         # 5. Guardamos el Agregado modificado
-        self._repo_procedimiento.guardar(procedimiento)
+        self._repo_procedimiento.guardar_procedimiento(procedimiento)
 
         # 6. Devolvemos confirmación
         return AnaliticaResponseDTO(

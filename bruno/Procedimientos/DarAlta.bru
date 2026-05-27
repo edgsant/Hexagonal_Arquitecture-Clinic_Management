@@ -1,0 +1,29 @@
+meta {
+  name: Dar Alta
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/procedimientos/proc1/alta
+}
+
+headers {
+  Authorization: Bearer {{jwt_token}}
+}
+
+tests {
+  test("El código de estado debe ser 200 OK", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Debe devolver un mensaje de éxito", function() {
+    const data = res.getBody();
+    expect(data.mensaje).to.equal("El alta se ha procesado correctamente. Procedimiento cerrado.");
+  });
+
+  test("El estado del procedimiento debe haber cambiado", function() {
+    const data = res.getBody();
+    expect(data.estado).to.not.equal("Activo"); // Asumo que cambiará a "Finalizado" o "Completado"
+  });
+}

@@ -69,7 +69,8 @@ class Container:
             ServicioRegistrarInforme: Servicio configurado.
         """
         return ServicioRegistrarInforme(
-            self.factory.crearRepoProcedimiento()
+            self.factory.crearRepoProcedimiento(),
+            self.factory.crearRepoUsuario()
         )
 
     def servicioRegistrarResultados(self) -> ServicioRegistrarResultados:

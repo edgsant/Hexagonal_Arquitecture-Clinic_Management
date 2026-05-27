@@ -21,6 +21,15 @@ body:json {
   }
 }
 
+script:post-response {
+  // Verificamos que la petición haya sido un éxito antes de intentar sacar datos
+  if (res.status === 201 || res.status === 200) {
+    // Guardamos el ID en una variable dinámica llamada "id_procedimiento_nuevo"
+    bru.setEnvVar("id_procedimiento_nuevo", res.body.id_procedimiento);
+    console.log("ID del nuevo procedimiento automatizado: " + res.body.id_procedimiento);
+  }
+}
+
 tests {
   test("El código de estado debe ser 201 Created (o 200 OK)", function() {
     expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;

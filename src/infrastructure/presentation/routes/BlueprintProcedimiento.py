@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt
 
@@ -86,7 +88,13 @@ def registrar_informe(id: str):
 
     # Inyectamos de forma transparente los datos de contexto (id de la URL y especialista del token)
     datos_json["procedimiento_id"] = id
-    datos_json["especialista_id"] = claims.get("especialista_id")
+    datos_json["especialista_id"] = claims.get("sub")
+
+    if 'fecha' in datos_json and isinstance(datos_json['fecha'], str):
+        try:
+            datos_json['fecha'] = datetime.datetime.strptime(datos_json['fecha'], "%Y-%m-%d").date()
+        except ValueError:
+            return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD"}), 400
 
     service = current_app.container.servicioRegistrarInforme()
 
@@ -104,8 +112,15 @@ def registrar_informe(id: str):
     
     except (TypeError, ValueError) as e:
         return jsonify({"error": f"Datos de informe inválidos: {str(e)}"}), 400
-    except Exception:
-        return jsonify({"error": "Error interno al guardar el informe."}), 500
+    except Exception as e:
+        import traceback
+        traceback.print_exc() 
+        
+        return jsonify({
+            "error": "Error interno al guardar el informe.",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
 
 
 @procedimiento_bp.route("/procedimientos/<id>/analiticas", methods=["POST"])

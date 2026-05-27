@@ -11,7 +11,7 @@ class TestServicioRegistrarInforme:
                                        procedimiento_mock, usuario_mock):
         """Debe registrar un informe exitosamente cuando el procedimiento existe y está activo."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)
@@ -30,7 +30,7 @@ class TestServicioRegistrarInforme:
                                                              repo_procedimiento_mock, repo_usuario_mock):
         """Debe lanzar ValueError si el procedimiento no existe."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = None
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = None
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarInformeRequestDTO(**datos_informe_validos)
@@ -50,7 +50,7 @@ class TestServicioRegistrarInforme:
         procedimiento_finalizado = MagicMock(spec=EntityProcedimiento)
         procedimiento_finalizado.estado = EstadoProcedimiento.FINALIZADO
         
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_finalizado
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_finalizado
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarInformeRequestDTO(**datos_informe_validos)
@@ -66,7 +66,7 @@ class TestServicioRegistrarInforme:
                                                             procedimiento_mock):
         """Debe lanzar ValueError si el especialista no existe."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         repo_usuario_mock.obtener_por_especialista_id.return_value = None
         
         servicio = ServicioRegistrarInforme(repo_procedimiento_mock, repo_usuario_mock)

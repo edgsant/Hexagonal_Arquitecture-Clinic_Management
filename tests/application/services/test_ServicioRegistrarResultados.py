@@ -12,7 +12,7 @@ class TestServicioRegistrarResultados:
         """Debe registrar los resultados analíticos exitosamente."""
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = [analitica_mock]
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
@@ -33,7 +33,7 @@ class TestServicioRegistrarResultados:
                                                                 repo_procedimiento_mock, repo_usuario_mock):
         """Debe lanzar ValueError si el procedimiento no existe."""
         # Arrange
-        repo_procedimiento_mock.obtener_por_id.return_value = None
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = None
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarResultadosRequestDTO(**datos_analitica_validos)
@@ -53,7 +53,7 @@ class TestServicioRegistrarResultados:
         procedimiento_finalizado = MagicMock(spec=EntityProcedimiento)
         procedimiento_finalizado.estado = EstadoProcedimiento.FINALIZADO
         
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_finalizado
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_finalizado
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
         peticion = RegistrarResultadosRequestDTO(**datos_analitica_validos)
@@ -70,7 +70,7 @@ class TestServicioRegistrarResultados:
         """Debe lanzar ValueError si el especialista no existe."""
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = [analitica_mock]
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         repo_usuario_mock.obtener_por_especialista_id.return_value = None
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)
@@ -88,7 +88,7 @@ class TestServicioRegistrarResultados:
         """Debe lanzar ValueError si la analítica no existe en el procedimiento."""
         # Arrange
         procedimiento_mock.obtener_pruebas_pendientes.return_value = []  # Sin análiticas pendientes
-        repo_procedimiento_mock.obtener_por_id.return_value = procedimiento_mock
+        repo_procedimiento_mock.obtener_procedimiento_por_id.return_value = procedimiento_mock
         repo_usuario_mock.obtener_por_especialista_id.return_value = usuario_mock
         
         servicio = ServicioRegistrarResultados(repo_procedimiento_mock, repo_usuario_mock)

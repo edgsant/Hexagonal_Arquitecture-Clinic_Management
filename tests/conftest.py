@@ -202,3 +202,85 @@ def repo_procedimiento_mock():
     repo.guardar_procedimiento = MagicMock()
     repo.guardar = MagicMock()
     return repo
+
+# ============ Repository fixtures para tests de infraestructura ============
+
+@pytest.fixture
+def repo_paciente_mem():
+    from infrastructure.persistence.RepositorioPacienteMem import RepositorioPacienteMem
+    return RepositorioPacienteMem()
+
+@pytest.fixture
+def repo_usuario_mem():
+    from infrastructure.persistence.RepositorioUsuarioMem import RepositorioUsuarioMem
+    return RepositorioUsuarioMem()
+
+@pytest.fixture
+def repo_procedimiento_mem():
+    from infrastructure.persistence.RepositorioProcedimientoMem import RepositorioProcedimientoMem
+    return RepositorioProcedimientoMem()
+
+
+# ============ Entity fixtures para tests de infraestructura ============
+
+@pytest.fixture
+def paciente_entity():
+    from domain.entities.EntityPaciente import EntityPaciente
+    return EntityPaciente(
+        id="pac-456-uuid",
+        dni="12345678A",
+        fecha_nacimiento=date(1985, 10, 12),
+        nombre="Alejandro",
+        apellidos="Sanz",
+        direccion="Calle de la Salud 4",
+        telefono="611223344"
+    )
+
+@pytest.fixture
+def especialista_entity():
+    from domain.entities.EntityEspecialista import EntityEspecialista
+    return EntityEspecialista(
+        id="esp-1",
+        nombre="Juan",
+        apellidos="Garcia",
+        dni="87654321B",
+        fecha_nacimiento=date(1980, 3, 9),
+        direccion="Calle Medico 19",
+        telefono="611223345"
+    )
+
+@pytest.fixture
+def usuario_entity(especialista_entity):
+    from domain.entities.EntityUsuario import EntityUsuario
+    return EntityUsuario(
+        id="user-456-uuid",
+        email="juan.garcia@clinica.es",
+        username="juangarcia",
+        password_hash=generate_password_hash("Password123"),
+        especialista=especialista_entity
+    )
+
+@pytest.fixture
+def procedimiento_factory(paciente_entity):
+    from domain.entities.EntityProcedimiento import EntityProcedimiento, EstadoProcedimiento
+
+    def factory(id: str):
+        procedimiento = EntityProcedimiento(id=id, paciente=paciente_entity)
+        procedimiento.id_paciente = paciente_entity.id
+        procedimiento.activo = procedimiento.estado == EstadoProcedimiento.ACTIVO
+
+        original_finalizar = procedimiento.finalizar
+        def finalizar_y_actualizar():
+            result = original_finalizar()
+            procedimiento.activo = procedimiento.estado == EstadoProcedimiento.ACTIVO
+            return result
+
+        procedimiento.finalizar = finalizar_y_actualizar
+        return procedimiento
+
+    return factory
+
+
+@pytest.fixture
+def procedimiento_entity(procedimiento_factory):
+    return procedimiento_factory("proc-999")

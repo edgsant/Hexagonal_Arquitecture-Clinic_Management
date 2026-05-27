@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt
 from application.dtos.PacienteDTOs import RegistrarPacienteRequestDTO
@@ -21,7 +23,21 @@ def registrar_paciente():
     if datos_json is None:
         return jsonify({"error": "El body debe ser JSON"}), 400
 
-    dto = RegistrarPacienteRequestDTO(**datos_json)
+    # 1. EL MAPEO (Responsabilidad del Blueprint)
+    # Extraemos y convertimos el string a Date antes de tocar el DTO
+    if 'fecha_nacimiento' in datos_json and isinstance(datos_json['fecha_nacimiento'], str):
+        try:
+            datos_json['fecha_nacimiento'] = datetime.strptime(datos_json['fecha_nacimiento'], "%Y-%m-%d").date()
+        except ValueError:
+            return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD"}), 400
+
+    # 2. INSTANCIACIÓN DEL DTO 
+    try:
+        dto = RegistrarPacienteRequestDTO(**datos_json)
+    except Exception as e:
+        # Capturamos cualquier error de validación del DTO (tipos, nulos...)
+        return jsonify({"error": str(e)}), 400
+
     service = current_app.container.servicioRegistrarPaciente()
 
     try:
@@ -40,7 +56,16 @@ def registrar_paciente():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        return jsonify({"error": "Error interno del servidor"}), 500
+        # 1. Imprimimos el error real y la línea exacta en la terminal de Flask
+        import traceback
+        traceback.print_exc() 
+        
+        # 2. Devolvemos el error real en el JSON para poder leerlo
+        return jsonify({
+            "error": "Error interno del servidor",
+            "detalle_real": str(e),
+            "tipo_de_error": e.__class__.__name__
+        }), 500
     
 
 

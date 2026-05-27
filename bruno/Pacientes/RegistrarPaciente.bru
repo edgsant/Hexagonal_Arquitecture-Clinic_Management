@@ -6,6 +6,8 @@ meta {
 
 post {
   url: {{baseUrl}}/pacientes
+  body: json
+  auth: none
 }
 
 headers {
@@ -15,11 +17,26 @@ headers {
 
 body:json {
   {
-      "dni": "33333333Z",
-      "nombre": "Ana",
-      "apellidos": "Gómez Ruiz",
-      "fecha_nacimiento": "1978-04-12",
-      "direccion": "Calle Nueva 10, Madrid",
-      "telefono": "640333333"
+    "dni": "33333333Z",
+    "nombre": "Ana",
+    "apellidos": "Gómez Ruiz",
+    "fecha_nacimiento": "1978-04-12",
+    "direccion": "Calle Nueva 10, Madrid",
+    "telefono": "640333333"
   }
-}​
+}
+
+tests {
+  test("El código de estado debe ser 201 Created (o 200 OK)", function() {
+    // Las creaciones de recursos deberían devolver 201, pero aceptamos 200 por si acaso
+    expect(res.getStatus() === 201 || res.getStatus() === 200).to.be.true;
+  });
+
+  test("La respuesta debe ser un JSON válido", function() {
+    const datos = res.getBody();
+    expect(datos).to.be.an('object');
+    
+    // Opcional: Si tu API devuelve el ID del paciente recién creado, puedes testearlo así:
+    // expect(datos).to.have.property('id');
+  });
+}

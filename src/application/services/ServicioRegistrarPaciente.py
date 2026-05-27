@@ -1,6 +1,6 @@
 import uuid # Librería nativa de Python para generar IDs únicos
 from domain.ports import IRepositorioPaciente
-from domain.entities import EntityPaciente
+from domain.entities.EntityPaciente import EntityPaciente
 from application.dtos.PacienteDTOs import RegistrarPacienteRequestDTO, PacienteResponseDTO
 
 class ServicioRegistrarPaciente:
@@ -40,7 +40,8 @@ class ServicioRegistrarPaciente:
         return PacienteResponseDTO(
             id=nuevo_paciente.id,
             dni=nuevo_paciente.dni,
-            nombre_completo=f"{nuevo_paciente.nombre} {nuevo_paciente.apellidos}",
+            nombre=nuevo_paciente.nombre,
+            apellidos=nuevo_paciente.apellidos,
             fecha_nacimiento=nuevo_paciente.fecha_nacimiento,
             direccion=nuevo_paciente.direccion,
             telefono=nuevo_paciente.telefono

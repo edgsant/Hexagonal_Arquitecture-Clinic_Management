@@ -15,7 +15,7 @@ URL del repositorio GitLab:
 # 1. Introducción
 El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica.
 El sistema tratará el seguimiento y trazabilidad del expediente de un paciente desde su registro, sus consultas y las pruebas médicas solicitadas junto a aquellos especialistas que las realizaron.
-El objetivo de esta practica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas.
+El objetivo de esta práctica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas.
 Se partirá de un documento que ya recoge el análisis del workflow de Requisitos, en docs/requisitos/documento-de-requisitos.
 
 ---
@@ -43,8 +43,8 @@ Para simplificar el sistema a desarrollar, se han tomado las siguientes decision
 ## 3.1 Clases identificadas
 - Paciente: El paciente que tiene o ha tenido un procedimiento y se le ha dado de alta en nuestro sistema. Contiene los datos personales de dicho paciente.
 - Procedimiento: Clase 'contenedor' del historial del paciente. Contiene toda la información relacionada con un procedimiento del paciente; consultas, pruebas, informes, etc. El paciente solo puede tener un procedimiento activo en un momento dado.
-- InformeInicial: Documento creado en la primera consulta cuando se inicia un procedimiento del paciente. Recoge antecedentes y analisis fisico inicial del paciente.
-- ActoClinico: Clase abstracta que agrupa los distintos actos a los que se someterá un paciente durante un procedimiento, las consultas y las pruebas, con un unico atributo fecha para facilitar la trazabilidad temporal de nuestro sistema y la visión global de los actos realizados durante un procedimiento.
+- InformeInicial: Documento creado en la primera consulta cuando se inicia un procedimiento del paciente. Recoge antecedentes y análisis fisico inicial del paciente.
+- ActoClinico: Clase abstracta que agrupa los distintos actos a los que se someterá un paciente durante un procedimiento, las consultas y las pruebas, con un único atributo fecha para facilitar la trazabilidad temporal de nuestro sistema y la visión global de los actos realizados durante un procedimiento.
 - Consulta: Interacción entre el paciente y un urólogo donde se evalúa al paciente y se toman decisiones clínicas (dar de alta o realizar una prueba)
 - Prueba: Superclase que agrupa los distintos procedimientos clínicos a los que se puede someter un paciente durante su Procedimiento, junto a la consulta que solicitó la prueba.
 - Analitica: Prueba clínica donde un AnalistaClinico recoge los valores de los datos obtenidos en laboratorio sobre el paciente. 
@@ -52,13 +52,13 @@ Para simplificar el sistema a desarrollar, se han tomado las siguientes decision
 - ResonanciaMagnetica: Artefacto clinico de una PruebaRadiologica.
 - Ecografia: Artefacto clinico de una PruebaRadiologica.
 - Biopsia: Prueba clínica realizada por un urólogo donde se le toman muestras a un paciente.
-- Muestra: Muestras obtenidas durante una biopsia que deberán ser diagnositcadas por un anatomopatólogo. 
+- Muestra: Muestras obtenidas durante una biopsia que deberán ser diagnosticadas por un anatomopatólogo. 
 - Intervencion: Prueba clínica realizada por un Urólogo donde se realiza una cirugía quirúrgica al paciente
 
 - Especialista: Superclase que agrupa todo el personal de la clínica. 
 - Usuario: Usuario ya dado de alta que usará el especialista para acceder al sistema
 - AnalistaClinico: Tipo de especialista encargado de recoger los datos en las Analiticas
-- AnatomoPatologo: Tipo de especilista encargado de analizar las Muestras tomadas en las Biopsias
+- AnatomoPatologo: Tipo de especialista encargado de analizar las Muestras tomadas en las Biopsias
 - Radiologo: Tipo de especialista encargado de tomar y analizar las PruebasRadiologicas y sus artefactos.
 - Urologo: Tipo de especialista encargado de las consultas y seguimiento del paciente.
 
@@ -68,29 +68,28 @@ Para simplificar el sistema a desarrollar, se han tomado las siguientes decision
 Durante el análisis del modelo de dominio se han tomado las siguientes decisiones para garantizar el cumplimiento de las reglas de negocio y simplificar el diseño y arquitectura del sistema:
 - Superclase ActoClinico: Para evitar que un procedimiento clinico tenga diversas relaciones 'dispersas' entre consultas y pruebas, se ha modelado para que Procedimiento tenga una relación única con cada ActoClínico relevante durante el Procedimiento del paciente, asegurando que Procedimiento tenga el historial global y ordenado.
 - Separación de Consulta y Prueba: Al requerir trazabilidad entre una Prueba y quien la realizó, y la consulta y el urólogo que la solicitó, se han modelado las dos clases Consulta y Prueba con una asociación entre ellas.
-- Relación general entre especialista y ActoClinico vs especificacion:   
 ---
 # 4. Modelo de análisis
 ## 4.1 Casos de uso
-- CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
+- CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erróneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
 
 
 - CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente.
 
 
-- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo en el que un Urologo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos.
+- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo en el que un Urólogo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos.
 
 
-- CU04 - Registrar informe clinico inicial: Este caso recoge el flujo de trabajo en el que un Urologo registra el informe inicial de un Paciente, sin flujos alternativos .
+- CU04 - Registrar informe clinico inicial: Este caso recoge el flujo de trabajo en el que un Urólogo registra el informe inicial de un Paciente, sin flujos alternativos .
 
 
-- CU05 - Registrar resultaddos de analitica: Este caso recoge el flujo de trabajo en el que un Analista clinico rellena una analitica pendiene de un procedimiento con los resultados de la prueba, sin flujos alternativos.
+- CU05 - Registrar resultados de analítica: Este caso recoge el flujo de trabajo en el que un Analista clínico rellena una analitica pendiente de un procedimiento con los resultados de la prueba, sin flujos alternativos.
 
 
-- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urologo consulta la lista de procedimientos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su informacion.
+- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urólogo consulta la lista de procedimientos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su información.
 
 
-- CU07 - Dar de alta un paciente: Este caso recoge el flujo de trabajo en el que un Urologo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
+- CU07 - Dar de alta un paciente: Este caso recoge el flujo de trabajo en el que un Urólogo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
 
 ## 4.2 Clases de análisis
 
@@ -111,13 +110,16 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el informe clinico inicial, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroIncial y las clases Entity Paciente, Procedimiento, InformeInicial, Solicitud y Cosulta.
 
 - CU05 - Registrar resultados de analitica
-![BCE CU05](docs/diagramas/CU05/Diagrama%20de%20analisis%20BCE%20-%20CU05.png)El diagrama BCE de este caso de uso se compone del Actor Analista clinico, aquel que quiere registrar los resultados de la analitica, relacionado con la clase Boundary AccesoAnalista que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistrarResultados y las clases Entity Procedimiento y Analitica.
+![BCE CU05](docs/diagramas/CU05/Diagrama%20de%20analisis%20BCE%20-%20CU05.png)
+El diagrama BCE de este caso de uso se compone del Actor Analista clinico, aquel que quiere registrar los resultados de la analitica, relacionado con la clase Boundary AccesoAnalista que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistrarResultados y las clases Entity Procedimiento y Analitica.
 
 - CU06 - Consultar procedimiento clinico
-![BCE CU06](docs/diagramas/CU06/Diagrama%20de%20analisis%20BCE%20-%20CU06.png)El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorConsultarProcedimiento y la clase Entity Procedimiento.
+![BCE CU06](docs/diagramas/CU06/Diagrama%20de%20analisis%20BCE%20-%20CU06.png)
+El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorConsultarProcedimiento y la clase Entity Procedimiento.
 
-- CU07 - dar de alta un paciente
-![BCE CU07](docs/diagramas/CU07/Diagrama%20de%20analisis%20BCE%20-%20CU07.png)El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorDarDeAlta y la clase Entity Procedimiento.
+- CU07 - Dar de alta un paciente
+![BCE CU07](docs/diagramas/CU07/Diagrama%20de%20analisis%20BCE%20-%20CU07.png)
+El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorDarDeAlta y la clase Entity Procedimiento.
 
 ## 4.3 Diagramas de secuencia
 - CU01 - Iniciar sesión:
@@ -189,12 +191,12 @@ Se ha organizado la capa de aplicación como una Service layer, diseñando una c
 
 - Patrón Repository:
 Se ha diseñado el acceso a los datos de la capa de persistencia mediante Repositorios e interfaces de dichos repositorios para aportar abstracción sobre el acceso a datos, ahora orientado al dominio, permitiendo que la capa aplicación solo dependa de la capa dominio y no dependa ni conozca el léxico de la capa infraestructura.
-Además, debido al alcance de la práctica, se ha aplicado el concepto de Aggregate Root, centralizando la persistencia en las entidades principales y evitando crear un repostiorio por entidad. De esta forma, se han diseñado 3 repositorios y sus respectivas interfaces que centralizan el acceso a los datos y proporcionan métodos oriantados al dominio, PacienteRepository, ProcedimientoRepository y UsuarioRepository.
+Además, debido al alcance de la práctica, se ha aplicado el concepto de Aggregate Root, centralizando la persistencia en las entidades principales y evitando crear un repositorio por entidad. De esta forma, se han diseñado 3 repositorios y sus respectivas interfaces que centralizan el acceso a los datos y proporcionan métodos orientados al dominio, PacienteRepository, ProcedimientoRepository y UsuarioRepository.
     - Qué problema resuelve: En lugar de crear un DAO tradicional con las 4 operaciones CRUD (Create, Read, Update, Delete) que acoplaría el diseño a una base de datos relacional, los repositorios simulan colecciones en memoria y exponen únicamente los métodos que exigen los casos de uso (ej. obtener_activo_por_paciente()). Se omite deliberadamente la operación Delete por reglas de negocio hospitalarias (los historiales no se borran) y el principio YAGNI.
 
 - Inyección de dependencias y capa transversal:
-Se ha diseñado un contenedor en la capa Transversal encargado de instanciar las factorías, los repositorios y los servicios, resuelviendo el problema del alto acoplamiento.
-Al inyectar los repositorios en los servicios a través de sus constructores, garantizamos que la capa de Aplicación sea completamente independiente de la tecnología de base de datos (SQLite o Memoria). Además, centralizar esta creación (Composition Root) facilita enormemente la inyección de dobles de prueba (Mocks) en fases de testing
+Se ha diseñado un contenedor en la capa Transversal encargado de instanciar las factorías, los repositorios y los servicios, resolviendo el problema del alto acoplamiento.
+Al inyectar los repositorios en los servicios a través de sus constructores, garantizamos que la capa de Aplicación sea completamente independiente de la tecnología de base de datos (SQLite o Memoria). Además, centralizar esta creación (Composition Root) facilita enormemente la inyección de dobles de prueba (Mocks) en fases de testing.
 
 - Patrón Page controller:
 En la capa de presentación se ha utilizado el framework Flask mediante el uso de Blueprints para agrupar los endpoints web por recurso (Auth, Pacientes, Procedimientos).
@@ -205,12 +207,13 @@ Esta capa se encarga exclusivamente de extraer los datos de la red (JSON) y dele
 ## 6.1 Estructura del código
 Se ha estructurado el codigo que implementa nuestro sistema con una estructura similar a la estructura hexagonal:
 
-
+```text
 dias2526-foxtrot/
-├── bruno/
-│   ├── diagramas/              # Diagramas UML en formato .png y .svg (Dominio, BCE, Secuencia, Arquitectura y Diseño)
-│   ├── requisitos/             # Documentos de análisis de requisitos inicial
-│   └── src/                    
+├── bruno/                      # Tests con bruno de los endpoints 
+│   ├── Auth/                    
+│   ├── Pacientes/
+│   ├── Procedimientos/          
+│   └── environment/                    
 ├── docs/                       
 │   ├── diagramas/              # Diagramas UML en formato .png y .svg (Dominio, BCE, Secuencia, Arquitectura y Diseño)
 │   ├── requisitos/             # Documentos de análisis de requisitos inicial
@@ -235,7 +238,7 @@ dias2526-foxtrot/
 │   └── infrastructure/         
 ├── pyproject.toml              # Configuración de librerías y dependencias (Poetry)
 └── README.md                   # Documentación principal del repositorio
-
+```
 
 ## 6.2 Tecnologías
 
@@ -282,29 +285,34 @@ Los Repositorios Reales implementan las interfaces del dominio utilizando SQLAlc
 ### Instalación
 ```bash
 poetry install
-poetry run python -m app.main #Este es un ejemplo
+poetry run python src/main.py
 ```
 
 # 7. Pruebas
 ## 7.1 Estrategia
 La estrategia seguida para la comprobación del sistema se realizó en dos niveles, garantizando la solidez tanto de la lógica interna como de la interfaz de comunicación externa:
-- Pruebas unitarias con Pytest: Hemos validado el nucleo del sistema de forma aislada (dominio y servicio), con el objetivo de asegurar que las reglas de negocio, validaciones y orquestación de datos funcionan correctamente de forma aislada, utilizando mocks para simular la persistencia.
+- Pruebas unitarias con Pytest: Hemos validado el núcleo del sistema de forma aislada (dominio y servicio), con el objetivo de asegurar que las reglas de negocio, validaciones y orquestación de datos funcionan correctamente de forma aislada, utilizando mocks para simular la persistencia.
 - Pruebas de API con Bruno: Para la capa de presentación hemos utilizado bruno, con el objetivo de validar el "contrato" de la API: comprobar que los endpoints reciben correctamente las peticiones (JSON), interactúan con el sistema y devuelven los códigos de estado HTTP adecuados junto con la estructura de datos esperada.
 
 ## 7.2 Tests implementados
 Se han realizado tests unitarios pytest en la carpeta tests reflejando la misma estructura que la carpeta src:
+```text
 │   ├── application/                    
 │   │   ├── dtos/               
 │   │   └── services/           
 │   ├── domain/                 
 │   │   ├── entities/           
 │   │   └── ports/
+│   ├── infrastructure/         
+│   │   └── persistence/
+```   
+Con un total de 328 tests unitarios para las capas domain, application y repositorios en memoria de infrastructure.
 
 Se han realizado test de bruno en la carpeta bruno para cada endpoint de los blueprints con los siguientes flujos:
 ├── bruno/
-│   ├── diagramas/          # Flujos de login (Urologo y Analista)
-│   ├── requisitos/         # Flujos con Procedimientos (crear, consultar, añadir informe/resultado, dar alta)
-│   └── src/                # Flujos con Pacientes (registrar paciente, consultar procedimientos asociados)     
+│   ├── Auth/               # Flujos de login (Urologo y Analista)
+│   ├── Pacientes/          # Flujos con Pacientes (registrar paciente, consultar procedimientos asociados)    
+│   └── Procedimientos/     # Flujos con Procedimientos (crear, consultar, añadir informe/resultado, dar alta)  
 
 ## 7.3 Ejecución
 ```bash
@@ -318,7 +326,7 @@ poetry run pytest -v
 Para las pruebas de bruno, se pueden ejecutar mediante la extensión de bruno en Visual Studio o mediante la interfaz gráfica de bruno, abriendo la carpeta del proyecto desde la aplicación de escritorio
 
 ## 7.4 Cobertura (opcional)
-Para asegurar la fiabilidad del núcleo del sistema, medimos la cobertura del sistema hasta alcanzar un % 
+Para asegurar la fiabilidad del núcleo del sistema, medimos la cobertura del sistema hasta alcanzar cerca del 100% en la mayoría de clases del domain y application.
 ```bash
 poetry run pytest --cov=src
 ```
@@ -336,7 +344,6 @@ poetry run pytest --cov=src
 | **CU07 - Dar de alta un paciente** | `Procedimiento` | Diagrama de Secuencia - CU07 | `ServicioDarDeAlta` | `ServicioDarDeAlta.py`, `ProcedimientoDTOs.py`, `EntityProcedimiento.py` | `test_ServicioDarDeAlta.py` |
 
 # 9. Planificación
-(Explicar cómo se ha organizado el trabajo durante las 8 semanas.)
 Nos hemos organizado siguiendo la planificación orientativa para las 8 semanas y documentando todo poco a poco:
 - Semanas 1-2, Inicio y dominio
 En las primeras semanas nos dedicamos a la lectura del documento y análisis inicial, configuración básica del proyecto en Git y la realización del diagrama del modelo de dominio
@@ -350,9 +357,9 @@ En las semanas 7-8 nos dedicamos a la implementación del diagrama de clases de 
 # 10. Conclusiones
 - Dificultades:
     - Aislamiento de capas y arquitectura: Realizar el diseño del sistema manteniendo puras cada capa sin mezclar responsabilidades nos requirió un esfuerzo extra para no contaminar la lógica del negocio con decisiones de los casos de uso o tecnologías a usar
-    - Gestión de versiones y git: Coordinarnos y mantener una estructura de ramas coherente y lo más cercana al mundo profesional posible, con gits incrementales y específicos, con varias ramas a la vez, nos obligó a ser mas rigurosos con los pulls y commits y a resolver más de un conflicto
+    - Gestión de versiones y git: Coordinarnos y mantener una estructura de ramas coherente y lo más cercana al mundo profesional posible, con commits incrementales y específicos, con varias ramas a la vez, nos obligó a ser mas rigurosos con los pulls y commits y a resolver más de un conflicto
 - Decisiones:
-    - Arquitectura hexagonal pura: Aunque nos requirió más trabajo aplicar una arquitectura hexagonal pura con un dominio rico y evitar al máximo la contamintación entre capas frente a otras opciones más sencillas para trabajos pequeños como MVC o un patrón de capas simplificado, aplicar el hexagonal de manera estricta nos garantizó un núcleo sólido y estable ante las pruebas ajeno a las capas externas y sus problemas.
+    - Arquitectura hexagonal pura: Aunque nos requirió más trabajo aplicar una arquitectura hexagonal pura con un dominio rico y evitar al máximo la contaminación entre capas frente a otras opciones más sencillas para trabajos pequeños como MVC o un patrón de capas simplificado, aplicar el hexagonal de manera estricta nos garantizó un núcleo sólido y estable ante las pruebas ajeno a las capas externas y sus problemas.
     - Uso de DTOs: Decidimos usar DTOs para la capa aplicación como contrato de comunicación entre Servicios y los diferentes adaptadores de la capa de infraestructura, aplicando aquí mismo la validación de campos para evitar propagar errores y obligar a un fail-fast cuando los adaptadores usen el DTO en vez de tener que llegar al Servicio y allí encontrar los errores.
     - Reducción del alcance: Dada la naturaleza de la práctica como proyecto universitario y siguiendo las indicaciones del enunciado de la práctica, optamos por acotar la implementación solo a los casos de uso CU01-CU07, priorizando una arquitectura limpia frente a simplemente más cantidad de líneas de código.
 - Aprendizaje:

@@ -9,55 +9,11 @@
 URL del repositorio GitLab:
     https://gitlab.inf.uva.es/edgsant/dias2526-foxtrot
 
-## Estructura y trabajo
-La rama main tendrá temporalmente la estructura base de la practica (carpetas y readme sin completar)
-
-Para trabajar correctamente en GitLab, cosas a recordar:
-### Trabajo con ramas
-Se recomienda no trabajar directamente sobre la rama principal (main o master). Cada cambio
-relevante debería desarrollarse en una rama específica, creada a partir de la rama principal.
-Conviene utilizar nombres de rama descriptivos y homogéneos. Por ejemplo:
-- feature/cu01-login
-- feature/modelo-dominio
-- feature/api-pacientes
-- fix/validacion-fecha
-- docs/readme
-- test/cu03-procedimiento
-La idea es que cada rama represente una tarea o cambio acotado, de forma que su propósito sea fácil de entender
-### Uso de merge requests
-La integración del trabajo en la rama principal debería realizarse preferentemente mediante
-merge requests en GitLab. No se recomienda hacer push directo a la rama principal salvo en casos
-excepcionales y justificados.
-Cada merge request debería:
-- tener un título claro y descriptivo;
-- agrupar cambios relacionados entre sí;
-- incluir una breve explicación de lo realizado;
-- permitir que otro integrante del grupo revise el trabajo antes de integrarlo.
-Siempre que sea posible, se recomienda que las merge requests sean pequeñas y frecuentes, en lugar de acumular muchos cambios en una única integración final.
-###  Revisión del trabajo
-El uso de GitLab debe reflejar una colaboración real entre los miembros del grupo. Por ello, se
-recomienda revisar el trabajo de los compañeros antes de aceptar una merge request, comprobando
-al menos:
-- que el cambio tiene sentido respecto al caso de uso o artefacto trabajado;
-- que no rompe la estructura general del proyecto;
-- que mantiene la coherencia con el análisis, el diseño y la implementación;
-- que la documentación y los nombres utilizados son comprensibles.
-No se busca una revisión exhaustiva como en un entorno profesional, pero sí una evidencia
-mínima de trabajo coordinado y validación entre iguales.
-### Mensajes de commit
-<tipo>: <descripción en minúsculas y lenguaje imperativo>
-- feat: nueva funcionalidad;
-- fix: corrección de errores;
-- docs: cambios en documentación;
-- test: incorporación o modificación de pruebas;
-- refactor: reorganización interna del código sin cambiar el comportamiento esperado;
-- chore: tareas auxiliares de configuración o mantenimiento
 
 ---
 
 # 1. Introducción
-(Breve descripción del sistema y del objetivo de la práctica.)
-El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica. 
+El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica.
 El sistema tratará el seguimiento y trazabilidad del expediente de un paciente desde su registro, sus consultas y las pruebas médicas solicitadas junto a aquellos especialistas que las realizaron.
 El objetivo de esta practica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas.
 Se partirá de un documento que ya recoge el análisis del workflow de Requisitos, en docs/requisitos/documento-de-requisitos.
@@ -116,9 +72,6 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 ---
 # 4. Modelo de análisis
 ## 4.1 Casos de uso
-(Descripción breve.)
-
-
 - CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erroneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
 
 
@@ -140,7 +93,6 @@ Durante el análisis del modelo de dominio se han tomado las siguientes decision
 - CU07 - Dar de alta un paciente: Este caso recoge el flujo de trabajo en el que un Urologo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
 
 ## 4.2 Clases de análisis
-(Explicación de su papel.)
 
 - CU01 - Iniciar sesión
 ![BCE CU01](docs/diagramas/CU01/Diagrama%20de%20analisis%20BCE%20-%20CU01.png)
@@ -181,10 +133,9 @@ El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que qui
 - CU06 - Consultar procedimiento clinico:
 ![Secuencia CU06](docs/diagramas/CU06/Diagrama%20de%20Secuencia%20-%20CU06.png)
 - CU07 - Dar de alta a un paciente
-![Secuencia CU06](docs/diagramas/CU07/Diagrama%20de%20Secuencia%20-%20CU07.png)
+![Secuencia CU07](docs/diagramas/CU07/Diagrama%20de%20Secuencia%20-%20CU07.png)
 
 ## 4.4 Comentarios
-(Decisiones importantes.)
 
 - Desacoplamiento paciente-procedimiento-consulta:
 Aunque en el caso real un paciente en nuestro sistema no existiría antes de una consulta inicial o sin procedimiento, se ha decidido que administrativamente 
@@ -196,11 +147,6 @@ bucles circulares en los diagramas de secuencia.
 ---
 # 5. Diseño
 ## 5.1 Arquitectura
-(Describir la arquitectura del sistema basada en la separación en capas (domain, application, inf-) el papel de cada capa)
-- las responsabilidades principales
-- cómo se relacionan entre sí
-
-
 Nuestro sistema aplica una estructura hexagonal, dividiendo el sistema en las capas Domain, Application, Infraestructure, y Transversal.
 Al aplicar este patron de diseño, nuestra estructura basada en capas mantiene el dominio como la capa más profunda para
 evitar un fuerte acoplamiento de dependencias entre dominio e interfaces, bases de datos, etc.
@@ -224,15 +170,6 @@ las capas externas, mientras que las externas usan las funcionalidades ofrecidas
 ## 5.3 Diseño de clases
 ![Clases](docs/diagramas/diagrama-diseno/Clases%20de%20diseno.png)
 ## 5.4 Decisiones de diseño
-(Describir las principales decisiones de diseño adoptadas, incluyendo:)
-- uso de patrones (si aplica)
-- asignación de responsabilidades entre clases y capas
-- organización del código
-Por cada decisión relevante, justificar:
-- qué problema resuelve
-- cómo se relaciona con los casos de uso y el modelo de análisis
-- qué impacto tiene en la implementación
-
 Se ha diseñado la implementación de nuestro sistema con las siguientes decisiones:
 - Capa de dominio y alcance reducido:
 Para la implementación de nuestro sistema, al tener que realizar una selección de casos de uso reducida (CU01-CU07) se ha decidido delimitar la implementación de las entidades de dominio a solo aquellas necesarias para ofrecer la implementación de los casos de uso cubiertos por nuestro alcance.
@@ -266,13 +203,14 @@ Esta capa se encarga exclusivamente de extraer los datos de la red (JSON) y dele
 ---
 # 6. Implementación
 ## 6.1 Estructura del código
-(Explicación de carpetas.)
 Se ha estructurado el codigo que implementa nuestro sistema con una estructura similar a la estructura hexagonal:
 
 
 dias2526-foxtrot/
 ├── bruno/
-│   └── nose                    # Punto de entrada de la aplicación (Levanta Flask y el Container)
+│   ├── diagramas/              # Diagramas UML en formato .png y .svg (Dominio, BCE, Secuencia, Arquitectura y Diseño)
+│   ├── requisitos/             # Documentos de análisis de requisitos inicial
+│   └── src/                    
 ├── docs/                       
 │   ├── diagramas/              # Diagramas UML en formato .png y .svg (Dominio, BCE, Secuencia, Arquitectura y Diseño)
 │   ├── requisitos/             # Documentos de análisis de requisitos inicial
@@ -349,15 +287,41 @@ poetry run python -m app.main #Este es un ejemplo
 
 # 7. Pruebas
 ## 7.1 Estrategia
-Qué se prueba y por qué.
+La estrategia seguida para la comprobación del sistema se realizó en dos niveles, garantizando la solidez tanto de la lógica interna como de la interfaz de comunicación externa:
+- Pruebas unitarias con Pytest: Hemos validado el nucleo del sistema de forma aislada (dominio y servicio), con el objetivo de asegurar que las reglas de negocio, validaciones y orquestación de datos funcionan correctamente de forma aislada, utilizando mocks para simular la persistencia.
+- Pruebas de API con Bruno: Para la capa de presentación hemos utilizado bruno, con el objetivo de validar el "contrato" de la API: comprobar que los endpoints reciben correctamente las peticiones (JSON), interactúan con el sistema y devuelven los códigos de estado HTTP adecuados junto con la estructura de datos esperada.
+
 ## 7.2 Tests implementados
-Descripción breve.
+Se han realizado tests unitarios pytest en la carpeta tests reflejando la misma estructura que la carpeta src:
+│   ├── application/                    
+│   │   ├── dtos/               
+│   │   └── services/           
+│   ├── domain/                 
+│   │   ├── entities/           
+│   │   └── ports/
+
+Se han realizado test de bruno en la carpeta bruno para cada endpoint de los blueprints con los siguientes flujos:
+├── bruno/
+│   ├── diagramas/          # Flujos de login (Urologo y Analista)
+│   ├── requisitos/         # Flujos con Procedimientos (crear, consultar, añadir informe/resultado, dar alta)
+│   └── src/                # Flujos con Pacientes (registrar paciente, consultar procedimientos asociados)     
+
 ## 7.3 Ejecución
 ```bash
-poetry run pytest # Esto es un ejemplo
-```
-## 7.4 Cobertura (opcional)
+# Ejecutar todos los tests unitarios
+poetry run pytest
 
+# Ejecutar con mayor nivel de detalle (verbose)
+poetry run pytest -v
+```
+
+Para las pruebas de bruno, se pueden ejecutar mediante la extensión de bruno en Visual Studio o mediante la interfaz gráfica de bruno, abriendo la carpeta del proyecto desde la aplicación de escritorio
+
+## 7.4 Cobertura (opcional)
+Para asegurar la fiabilidad del núcleo del sistema, medimos la cobertura del sistema hasta alcanzar un % 
+```bash
+poetry run pytest --cov=src
+```
 
 # 8. Trazabilidad
 | **Caso de uso** | **Dominio** | **Análisis** | **Diseño** | **Código** | **Test** |
@@ -384,10 +348,20 @@ En las semanas 5-6 se decidieron la estructura y los patrones para la implementa
 En las semanas 7-8 nos dedicamos a la implementación del diagrama de clases de diseño en código python y los tests de los mismos
 
 # 10. Conclusiones
-- Dificultades
-- Decisiones
-- Aprendizaje
+- Dificultades:
+    - Aislamiento de capas y arquitectura: Realizar el diseño del sistema manteniendo puras cada capa sin mezclar responsabilidades nos requirió un esfuerzo extra para no contaminar la lógica del negocio con decisiones de los casos de uso o tecnologías a usar
+    - Gestión de versiones y git: Coordinarnos y mantener una estructura de ramas coherente y lo más cercana al mundo profesional posible, con gits incrementales y específicos, con varias ramas a la vez, nos obligó a ser mas rigurosos con los pulls y commits y a resolver más de un conflicto
+- Decisiones:
+    - Arquitectura hexagonal pura: Aunque nos requirió más trabajo aplicar una arquitectura hexagonal pura con un dominio rico y evitar al máximo la contamintación entre capas frente a otras opciones más sencillas para trabajos pequeños como MVC o un patrón de capas simplificado, aplicar el hexagonal de manera estricta nos garantizó un núcleo sólido y estable ante las pruebas ajeno a las capas externas y sus problemas.
+    - Uso de DTOs: Decidimos usar DTOs para la capa aplicación como contrato de comunicación entre Servicios y los diferentes adaptadores de la capa de infraestructura, aplicando aquí mismo la validación de campos para evitar propagar errores y obligar a un fail-fast cuando los adaptadores usen el DTO en vez de tener que llegar al Servicio y allí encontrar los errores.
+    - Reducción del alcance: Dada la naturaleza de la práctica como proyecto universitario y siguiendo las indicaciones del enunciado de la práctica, optamos por acotar la implementación solo a los casos de uso CU01-CU07, priorizando una arquitectura limpia frente a simplemente más cantidad de líneas de código.
+- Aprendizaje:
+    - Diseño orientado al dominio: Hemos aprendido el flujo entero desde las primeras fases de análisis y diseño a como se transforma esto en implementación, y con ello la importancia de haber realizado correctamente las primeras fases "ajenas" a los conocimientos técnicos gracias a la facilidad que luego fue la implementación en comparación con las fases anteriores.
+    - Diferenciación de responsabilidades y ubicación: Tras haber buscado mantener la arquitectura hexagonal lo más pura posible, hemos aprendido bastante a distinguir las responsabilidades de cada capa y como diferentes patrones se enfrentan a este problema y otras opciones que podríamos haber aplicado para nuestro sistema, con sus diferentes pros y contras.
+    - Dominio de Git: Hemos pasado de usar git como un simple guardado en la nube para proyectos personales a aprender a utilizarlo como un correcto control de versiones y herramienta de integración para el trabajo en equipo.
 - Mejoras futuras
+    - Completar el alcance: La primera mejora sería finalizar el sistema propuesto e implementar el modelo de dominio completo y el resto de casos de uso.
+    - Desarrollo de frontend: Otra mejora muy conveniente sería la construcción de una aplicación web para la interacción con los usuarios
 # Anexo I
 ## Videodefensa
-<Enlace a la videodefensa>
+<https://canva.link/0ht5rt9ucugwjvz>

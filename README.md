@@ -13,15 +13,14 @@ URL del repositorio GitLab:
 ---
 
 # 1. Introducción
-El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica.
-El sistema tratará el seguimiento y trazabilidad del expediente de un paciente desde su registro, sus consultas y las pruebas médicas solicitadas junto a aquellos especialistas que las realizaron.
-El objetivo de esta práctica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas.
-Se partirá de un documento que ya recoge el análisis del workflow de Requisitos, en docs/requisitos/documento-de-requisitos.
+El proyecto a desarrollar consiste en un sistema web para la gestión de pacientes en una clínica urológica.  
+El sistema tratará el seguimiento y trazabilidad del expediente de un paciente desde su registro, sus consultas y las pruebas médicas solicitadas junto a aquellos especialistas que las realizaron.  
+El objetivo de esta práctica es aplicar los conocimientos de la asignatura Diseño, Integración y Adaptación de Software para un sistema y aplicando los 5 flujos de trabajo; Requisitos, Análisis, Diseño, Implementación y Pruebas. Se partirá de un documento que ya recoge el análisis del workflow de Requisitos, en docs/requisitos/documento-de-requisitos.
 
 ---
 
 # 2. Alcance del trabajo
-Este proyecto solo tratará un subconjunto acotado de funcionalidad del sistema clínico descrito en el enunciado para los flujos de trabajo de Análisis, Diseño e Implementación.
+Este proyecto solo tratará un subconjunto acotado de funcionalidad del sistema clínico descrito en el enunciado para los flujos de trabajo de Análisis, Diseño e Implementación.  
 
 ## Funcionalidad trabajada
 El sistema solo abarcará los siguientes casos de uso:
@@ -35,111 +34,141 @@ El sistema solo abarcará los siguientes casos de uso:
 
 ## Decisiones sobre el alcance funcional
 Para simplificar el sistema a desarrollar, se han tomado las siguientes decisiones:
-- Gestión de Especialistas: Todos los especialistas estarán ya dados de alta en el sistema, no se tratará las funcionalidades de dar de alta o gestionar sus cuentas.
-- Gestión de citas: El sistema no gestiona las citas o agendas de los pacientes, se asumirá que para las consultas o pruebas el paciente ya fue citado externamente.
-- Almacenamiento de pruebas: El sistema no gestiona la localización del almacenamiento de muestras de biopsias.
+- **Gestión de Especialistas:** Todos los especialistas estarán ya dados de alta en el sistema. No se tratarán las funcionalidades de dar de alta o gestionar sus cuentas.
+- **Gestión de citas:** El sistema no gestiona las citas o agendas de los pacientes; se asumirá que para las consultas o pruebas el paciente ya fue citado externamente.
+- **Almacenamiento de pruebas:** El sistema no gestiona la localización física del almacenamiento de muestras de biopsias.
 
 # 3. Modelo de dominio
 ## 3.1 Clases identificadas
-- Paciente: El paciente que tiene o ha tenido un procedimiento y se le ha dado de alta en nuestro sistema. Contiene los datos personales de dicho paciente.
-- Procedimiento: Clase 'contenedor' del historial del paciente. Contiene toda la información relacionada con un procedimiento del paciente; consultas, pruebas, informes, etc. El paciente solo puede tener un procedimiento activo en un momento dado.
-- InformeInicial: Documento creado en la primera consulta cuando se inicia un procedimiento del paciente. Recoge antecedentes y análisis fisico inicial del paciente.
-- ActoClinico: Clase abstracta que agrupa los distintos actos a los que se someterá un paciente durante un procedimiento, las consultas y las pruebas, con un único atributo fecha para facilitar la trazabilidad temporal de nuestro sistema y la visión global de los actos realizados durante un procedimiento.
-- Consulta: Interacción entre el paciente y un urólogo donde se evalúa al paciente y se toman decisiones clínicas (dar de alta o realizar una prueba)
-- Prueba: Superclase que agrupa los distintos procedimientos clínicos a los que se puede someter un paciente durante su Procedimiento, junto a la consulta que solicitó la prueba.
-- Analitica: Prueba clínica donde un AnalistaClinico recoge los valores de los datos obtenidos en laboratorio sobre el paciente. 
+- **Paciente:** El paciente que tiene o ha tenido un procedimiento y se le ha dado de alta en nuestro sistema. Contiene los datos personales de dicho paciente.
+- **Procedimiento:** Clase 'contenedor' del historial del paciente. Contiene toda la información relacionada con un procedimiento del paciente; consultas, pruebas, informes, etc. El paciente solo puede tener un procedimiento activo en un momento dado.
+- **InformeInicial:** Documento creado en la primera consulta cuando se inicia un procedimiento del paciente. Recoge antecedentes y análisis fisico inicial del paciente.
+- **ActoClinico:** Clase abstracta que agrupa los distintos actos a los que se someterá un paciente durante un procedimiento, las consultas y las pruebas, con un único atributo fecha para facilitar la trazabilidad temporal de nuestro sistema y la visión global de los actos realizados durante un procedimiento.
+- **Consulta:** Interacción entre el paciente y un urólogo donde se evalúa al paciente y se toman decisiones clínicas (dar de alta o realizar una prueba)
+- **Prueba:** Superclase que agrupa los distintos procedimientos clínicos a los que se puede someter un paciente durante su Procedimiento, junto a la consulta que solicitó la prueba.
+- **Analitica:** Prueba clínica donde un AnalistaClinico recoge los valores de los datos obtenidos en laboratorio sobre el paciente. 
 - PruebaRadiologica: Prueba clínica donde un Radiologo recoge los resultados de dos artefactos clínicos realizados sobre el paciente; la ResonanciaMagnetica y la Ecografia.  
-- ResonanciaMagnetica: Artefacto clinico de una PruebaRadiologica.
-- Ecografia: Artefacto clinico de una PruebaRadiologica.
-- Biopsia: Prueba clínica realizada por un urólogo donde se le toman muestras a un paciente.
-- Muestra: Muestras obtenidas durante una biopsia que deberán ser diagnosticadas por un anatomopatólogo. 
-- Intervencion: Prueba clínica realizada por un Urólogo donde se realiza una cirugía quirúrgica al paciente
-
-- Especialista: Superclase que agrupa todo el personal de la clínica. 
-- Usuario: Usuario ya dado de alta que usará el especialista para acceder al sistema
-- AnalistaClinico: Tipo de especialista encargado de recoger los datos en las Analiticas
-- AnatomoPatologo: Tipo de especialista encargado de analizar las Muestras tomadas en las Biopsias
-- Radiologo: Tipo de especialista encargado de tomar y analizar las PruebasRadiologicas y sus artefactos.
-- Urologo: Tipo de especialista encargado de las consultas y seguimiento del paciente.
+- **ResonanciaMagnetica:** Artefacto clinico de una PruebaRadiologica.
+- **Ecografia:** Artefacto clinico de una PruebaRadiologica.
+- **Biopsia:** Prueba clínica realizada por un urólogo donde se le toman muestras a un paciente.
+- **Muestra:** Muestras obtenidas durante una biopsia que deberán ser diagnosticadas por un anatomopatólogo. 
+- **Intervencion:** Prueba clínica realizada por un Urólogo donde se realiza una cirugía quirúrgica al paciente
+- **Usuario:** Usuario ya dado de alta que usará el especialista para acceder al sistema
+- **Especialista:** Superclase que agrupa todo el personal de la clínica. 
+- **AnalistaClinico:** Tipo de especialista encargado de recoger los datos en las Analiticas
+- **AnatomoPatologo:** Tipo de especialista encargado de analizar las Muestras tomadas en las Biopsias
+- **Radiologo:** Tipo de especialista encargado de tomar y analizar las PruebasRadiologicas y sus artefactos.
+- **Urologo:** Tipo de especialista encargado de las consultas y seguimiento del paciente.
 
 ## 3.2 Diagrama de dominio
-![Dominio](docs/diagramas/modelo-dominio/Modelo-de-Dominio-v3.png)
+![Dominio](docs/diagramas/modelo-dominio/Modelo-de-Dominio-v3.png)  
+
+
 ## 3.3 Comentarios
 Durante el análisis del modelo de dominio se han tomado las siguientes decisiones para garantizar el cumplimiento de las reglas de negocio y simplificar el diseño y arquitectura del sistema:
-- Superclase ActoClinico: Para evitar que un procedimiento clinico tenga diversas relaciones 'dispersas' entre consultas y pruebas, se ha modelado para que Procedimiento tenga una relación única con cada ActoClínico relevante durante el Procedimiento del paciente, asegurando que Procedimiento tenga el historial global y ordenado.
-- Separación de Consulta y Prueba: Al requerir trazabilidad entre una Prueba y quien la realizó, y la consulta y el urólogo que la solicitó, se han modelado las dos clases Consulta y Prueba con una asociación entre ellas.
+- **Superclase ActoClinico:** Para evitar que un procedimiento clinico tenga diversas relaciones 'dispersas' entre consultas y pruebas, se ha modelado para que Procedimiento tenga una relación única con cada ActoClínico relevante durante el Procedimiento del paciente, asegurando que Procedimiento tenga el historial global y ordenado.
+- **Separación de Consulta y Prueba:** Al requerir trazabilidad entre una Prueba y quien la realizó, y la consulta y el urólogo que la solicitó, se han modelado las dos clases Consulta y Prueba con una asociación entre ellas.
 ---
 # 4. Modelo de análisis
 ## 4.1 Casos de uso
-- CU01 - Iniciar Sesión: Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erróneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
+- **CU01 - Iniciar Sesión:** Este caso recoge el flujo de trabajo en el que un especialista (previamente registrado en el sistema) intenta iniciar sesión con su usuario y contraseña. Al realizarse correctamente el sistema debe identificar que especialista es el asociado a esa cuenta para darle el acceso a las funciones relacionadas con su rol, y en caso erróneo al introducir credenciales no válidas el se mostrará un error y NO se iniciará sesión. 
 
 
-- CU02 - Registrar Nuevo Paciente: Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente.
+- **CU02 - Registrar Nuevo Paciente:** Este caso recoge el flujo de trabajo en el que un Urólogo con sesión iniciada previamente en el sistema, de de alta en nuestro sistema a un nuevo paciente. Una vez introducidos de manera correcta los datos asociados al paciente, quedará registrada su ficha en el sistema con los datos personales de ese paciente. En caso de confundirse el Urólogo al introducirlos, se mostrará un mensaje de error y deberá volver a introducirlos correctamente.
 
 
-- CU03 - Crear procedimiento clínico: Este caso recoge el flujo de trabajo en el que un Urólogo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos.
+- **CU03 - Crear procedimiento clínico:** Este caso recoge el flujo de trabajo en el que un Urólogo registra un procedimiento nuevo a un paciente ya registrado en el sistema que no tenga ningun procedimiento activo en el momento. En caso de que el paciente ya tenga un procedimiento activo, mostrara error y no registrara procedimientos nuevos.
 
 
-- CU04 - Registrar informe clinico inicial: Este caso recoge el flujo de trabajo en el que un Urólogo registra el informe inicial de un Paciente, sin flujos alternativos .
+- **CU04 - Registrar informe clinico inicial:** Este caso recoge el flujo de trabajo en el que un Urólogo registra el informe inicial de un Paciente, sin flujos alternativos .
 
 
-- CU05 - Registrar resultados de analítica: Este caso recoge el flujo de trabajo en el que un Analista clínico rellena una analitica pendiente de un procedimiento con los resultados de la prueba, sin flujos alternativos.
+- **CU05 - Registrar resultados de analítica:** Este caso recoge el flujo de trabajo en el que un Analista clínico rellena una analitica pendiente de un procedimiento con los resultados de la prueba, sin flujos alternativos.
 
 
-- CU06 - Consultar procedimiento clinico: Este caso recoge el flujo de trabajo en el que un Urólogo consulta la lista de procedimientos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su información.
+- **CU06 - Consultar procedimiento clinico:** Este caso recoge el flujo de trabajo en el que un Urólogo consulta la lista de procedimientos clinicos que tiene a su disposicion y de ellos selecciona uno para consultar su información.
 
 
-- CU07 - Dar de alta un paciente: Este caso recoge el flujo de trabajo en el que un Urólogo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
+- **CU07 - Dar de alta un paciente:** Este caso recoge el flujo de trabajo en el que un Urólogo decide cerrar el procedimiento de un paciente para darle el alta, sin flujos alternativos.
 
 ## 4.2 Clases de análisis
 
-- CU01 - Iniciar sesión
+### CU01 - Iniciar sesión
+
 ![BCE CU01](docs/diagramas/CU01/Diagrama%20de%20analisis%20BCE%20-%20CU01.png)
+
+
 El diagrama BCE de este caso de uso se compone del Actor Especialista, aquel que quiere iniciar sesion, relacionado con la clase Boundary AccesoInicioSesion que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorInicioSesion y las clases Entity Usuario que es el usuario del sistema del Especialista y la Entity Especialista, que es la información asociada a dicho usuario sobre el especialista (datos personales, rol, etc)
 
-- CU02 - Registrar paciente
-![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)
-El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.
+### CU02 - Registrar paciente
 
-- CU03 - Crear procedimiento clinico
-![BCE CU03](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU03.png)
+![BCE CU02](docs/diagramas/CU02/Diagrama%20de%20analisis%20BCE%20-%20CU02.png)  
+
+El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar al paciente, relacionado con la clase Boundary AccesoRegistroPaciente que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroPaciente y la clase Entity Paciente.  
+
+### CU03 - Crear procedimiento clinico
+
+![BCE CU03](docs/diagramas/CU03/Diagrama%20de%20analisis%20BCE%20-%20CU03.png)  
+
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el procedimiento, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorCrearProcedimiento y las clases Entity Paciente y Procedimiento.
 
-- CU04 - Registrar informe clinico inicial
-![BCE CU04](docs/diagramas/CU04/Diagrama%20de%20analisis%20BCE%20-%20CU04.png)
+### CU04 - Registrar informe clinico inicial
+
+![BCE CU04](docs/diagramas/CU04/Diagrama%20de%20analisis%20BCE%20-%20CU04.png)  
+
 El diagrama BCE de este caso de uso se compone del Actor Urólogo, aquel que quiere registrar el informe clinico inicial, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistroIncial y las clases Entity Paciente, Procedimiento, InformeInicial, Solicitud y Cosulta.
 
-- CU05 - Registrar resultados de analitica
+### CU05 - Registrar resultados de analitica
+
 ![BCE CU05](docs/diagramas/CU05/Diagrama%20de%20analisis%20BCE%20-%20CU05.png)
+
 El diagrama BCE de este caso de uso se compone del Actor Analista clinico, aquel que quiere registrar los resultados de la analitica, relacionado con la clase Boundary AccesoAnalista que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorRegistrarResultados y las clases Entity Procedimiento y Analitica.
 
-- CU06 - Consultar procedimiento clinico
+### CU06 - Consultar procedimiento clinico
+
 ![BCE CU06](docs/diagramas/CU06/Diagrama%20de%20analisis%20BCE%20-%20CU06.png)
+
 El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorConsultarProcedimiento y la clase Entity Procedimiento.
 
-- CU07 - Dar de alta un paciente
+### CU07 - Dar de alta un paciente
+
 ![BCE CU07](docs/diagramas/CU07/Diagrama%20de%20analisis%20BCE%20-%20CU07.png)
+
 El diagrama BCE de este caso de uso se compone del Actor Urologo, aquel que quiere consultar un procedimiento clinico, relacionado con la clase Boundary AccesoUrologo que se encarga de la interacción entre el actor y el sistema, la clase Controller GestorDarDeAlta y la clase Entity Procedimiento.
 
 ## 4.3 Diagramas de secuencia
-- CU01 - Iniciar sesión:
+
+### CU01 - Iniciar sesión:
+
 ![Secuencia CU01](docs/diagramas/CU01/Diagrama%20de%20secuencia%20-%20CU01.png)
-- CU02 - Registrar paciente:
+
+### CU02 - Registrar paciente:
+
 ![Secuencia CU02](docs/diagramas/CU02/Diagrama%20de%20Secuencia%20-%20CU02.png)
-- CU03 - Crear procedimiento:
+
+### CU03 - Crear procedimiento:
+
 ![Secuencia CU03](docs/diagramas/CU03/Diagrama%20de%20secuencia%20-%20CU03.png)
-- CU04 - Registrar informe clinico inicial:
+
+### CU04 - Registrar informe clinico inicial:
+
 ![Secuencia CU04](docs/diagramas/CU04/Diagrama%20de%20secuencia%20-%20CU04.png)
-- CU05 - Registrar resultados de analitica:
+
+### CU05 - Registrar resultados de analitica:
+
 ![Secuencia CU05](docs/diagramas/CU05/Diagrama%20de%20Secuencia%20-%20CU05.png)
-- CU06 - Consultar procedimiento clinico:
+
+### CU06 - Consultar procedimiento clinico:
+
 ![Secuencia CU06](docs/diagramas/CU06/Diagrama%20de%20Secuencia%20-%20CU06.png)
-- CU07 - Dar de alta a un paciente
+
+### CU07 - Dar de alta a un paciente
+
 ![Secuencia CU07](docs/diagramas/CU07/Diagrama%20de%20Secuencia%20-%20CU07.png)
 
 ## 4.4 Comentarios
 
-- Desacoplamiento paciente-procedimiento-consulta:
+- **Desacoplamiento paciente-procedimiento-consulta:**
 Aunque en el caso real un paciente en nuestro sistema no existiría antes de una consulta inicial o sin procedimiento, se ha decidido que administrativamente 
 el sistema permitirá el registro del paciente independientemente de sus procedimientos, y procedimientos nuevos independientes de las consultas, 
 logrando desacoplar dependencias entre los casos de uso 2-Crear procedimiento, 3-Registrar Paciente y 4-Registrar informe inicial y evitando
@@ -168,10 +197,15 @@ las capas externas, mientras que las externas usan las funcionalidades ofrecidas
 - **Transversal**: Capa que reúne utilidades usadas o que usarán el resto de capas, en nuestro caso conteniendo la clase que aplica el patrón factoría y el container encargado de la inyección de dependencias.
 
 ## 5.2 Diagrama de arquitectura
+
 ![Arquitectura](docs/diagramas/diagrama-arquitectura/Diagrama%20de%20arquitectura.png)
+
 ## 5.3 Diseño de clases
+
 ![Clases](docs/diagramas/diagrama-diseno/Clases%20de%20diseno.png)
+
 ## 5.4 Decisiones de diseño
+
 Se ha diseñado la implementación de nuestro sistema con las siguientes decisiones:
 - Capa de dominio y alcance reducido:
 Para la implementación de nuestro sistema, al tener que realizar una selección de casos de uso reducida (CU01-CU07) se ha decidido delimitar la implementación de las entidades de dominio a solo aquellas necesarias para ofrecer la implementación de los casos de uso cubiertos por nuestro alcance.
@@ -345,30 +379,30 @@ poetry run pytest --cov=src
 
 # 9. Planificación
 Nos hemos organizado siguiendo la planificación orientativa para las 8 semanas y documentando todo poco a poco:
-- Semanas 1-2, Inicio y dominio
+- **Semanas 1-2, Inicio y dominio:**  
 En las primeras semanas nos dedicamos a la lectura del documento y análisis inicial, configuración básica del proyecto en Git y la realización del diagrama del modelo de dominio
-- Semanas 3-4, BCE y Secuencia
+- **Semanas 3-4, BCE y Secuencia:**  
 En las semanas 3-4 nos dedicamos a reconocer las entidades del dominio que actuaban en cada caso de uso y los diagramas de secuencia de nuestros 7 casos de uso a implementar
-- Semanas 5-6, diagrama de paquetes y diagrama de diseño
+- **Semanas 5-6, diagrama de paquetes y diagrama de diseño:**  
 En las semanas 5-6 se decidieron la estructura y los patrones para la implementación de nuestro sistema y se realizaron el diagrama de paquetes y el diagrama de clases de diseño
-- Semanas 7-8, implementación y tests
+- **Semanas 7-8, implementación y tests:**  
 En las semanas 7-8 nos dedicamos a la implementación del diagrama de clases de diseño en código python y los tests de los mismos
 
 # 10. Conclusiones
-- Dificultades:
+- **Dificultades:**
     - Aislamiento de capas y arquitectura: Realizar el diseño del sistema manteniendo puras cada capa sin mezclar responsabilidades nos requirió un esfuerzo extra para no contaminar la lógica del negocio con decisiones de los casos de uso o tecnologías a usar
     - Gestión de versiones y git: Coordinarnos y mantener una estructura de ramas coherente y lo más cercana al mundo profesional posible, con commits incrementales y específicos, con varias ramas a la vez, nos obligó a ser mas rigurosos con los pulls y commits y a resolver más de un conflicto
-- Decisiones:
+- **Decisiones:**
     - Arquitectura hexagonal pura: Aunque nos requirió más trabajo aplicar una arquitectura hexagonal pura con un dominio rico y evitar al máximo la contaminación entre capas frente a otras opciones más sencillas para trabajos pequeños como MVC o un patrón de capas simplificado, aplicar el hexagonal de manera estricta nos garantizó un núcleo sólido y estable ante las pruebas ajeno a las capas externas y sus problemas.
     - Uso de DTOs: Decidimos usar DTOs para la capa aplicación como contrato de comunicación entre Servicios y los diferentes adaptadores de la capa de infraestructura, aplicando aquí mismo la validación de campos para evitar propagar errores y obligar a un fail-fast cuando los adaptadores usen el DTO en vez de tener que llegar al Servicio y allí encontrar los errores.
     - Reducción del alcance: Dada la naturaleza de la práctica como proyecto universitario y siguiendo las indicaciones del enunciado de la práctica, optamos por acotar la implementación solo a los casos de uso CU01-CU07, priorizando una arquitectura limpia frente a simplemente más cantidad de líneas de código.
-- Aprendizaje:
+- **Aprendizaje:**
     - Diseño orientado al dominio: Hemos aprendido el flujo entero desde las primeras fases de análisis y diseño a como se transforma esto en implementación, y con ello la importancia de haber realizado correctamente las primeras fases "ajenas" a los conocimientos técnicos gracias a la facilidad que luego fue la implementación en comparación con las fases anteriores.
     - Diferenciación de responsabilidades y ubicación: Tras haber buscado mantener la arquitectura hexagonal lo más pura posible, hemos aprendido bastante a distinguir las responsabilidades de cada capa y como diferentes patrones se enfrentan a este problema y otras opciones que podríamos haber aplicado para nuestro sistema, con sus diferentes pros y contras.
     - Dominio de Git: Hemos pasado de usar git como un simple guardado en la nube para proyectos personales a aprender a utilizarlo como un correcto control de versiones y herramienta de integración para el trabajo en equipo.
-- Mejoras futuras
+- **Mejoras futuras:**
     - Completar el alcance: La primera mejora sería finalizar el sistema propuesto e implementar el modelo de dominio completo y el resto de casos de uso.
     - Desarrollo de frontend: Otra mejora muy conveniente sería la construcción de una aplicación web para la interacción con los usuarios
 # Anexo I
 ## Videodefensa
-<https://canva.link/0ht5rt9ucugwjvz>
+<https://canva.link/0s0myl1kh7ykcil>

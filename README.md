@@ -1,4 +1,31 @@
-# Práctica DIAS – Grupo Foxtrot
+# Urology Clinic API - Arquitectura Hexagonal y DDD
+
+API RESTful desarrollada en Python para la gestión integral y trazabilidad de expedientes de pacientes en una clínica urológica. 
+
+Este proyecto destaca por la aplicación estricta de **Arquitectura Hexagonal (Puertos y Adaptadores)** y principios de **Domain-Driven Design (DDD)**. El objetivo principal del diseño ha sido construir un núcleo de negocio puro, altamente testeable (con más de 300 tests automatizados) y totalmente desacoplado de frameworks externos, bases de datos o interfaces de usuario.
+
+## 🚀 Stack Tecnológico
+
+*   **Lenguaje:** Python (Tipado estricto con *Type Hinting* y `@dataclass`).
+*   **Presentación (Web):** Flask, Flask-JWT-Extended (Patrón *Page Controller* vía Blueprints).
+*   **Persistencia (ORM):** SQLAlchemy.
+*   **Inyección de Dependencias:** Dependency Injector.
+*   **Testing:** Pytest (Unit Testing, +95% cobertura) y Bruno (API E2E Testing).
+*   **Gestor de Paquetes:** Poetry.
+
+---
+
+## 🏗️ Decisiones de Arquitectura y Diseño
+
+El sistema está dividido en cuatro capas fundamentales (Dominio, Aplicación, Infraestructura y Transversal) aplicando los siguientes patrones:
+
+*   **Modelo de Dominio Rico (DDD):** Se ha evitado el antipatrón de "Dominio Anémico". Las entidades no son meros contenedores de datos, sino que encapsulan comportamiento y validan las reglas de negocio (ej. `Procedimiento.finalizar()` comprueba la ausencia de analíticas pendientes antes de mutar el estado). Navegabilidad unidireccional estricta para evitar sobrecarga de memoria.
+*   **Inversión de Dependencias y Patrón Repository:** El acceso a datos se abstrae mediante interfaces orientadas al dominio (`PacienteRepository`, `ProcedimientoRepository`). La capa de Aplicación desconoce si los datos provienen de colecciones en memoria o bases de datos relacionales (SQLAlchemy).
+*   **Data Transfer Objects (DTOs) y *Fail-Fast*:** La comunicación entre la Presentación y los Servicios se realiza exclusivamente mediante DTOs. El método `__post_init__` valida la integridad estructural (tipos, nulos, strings vacíos) en la frontera del sistema, devolviendo errores HTTP 400 antes de que peticiones malformadas alcancen la lógica de negocio.
+*   **Service Layer (Operation Script):** Cada caso de uso (ej. `ServicioIniciarSesion`, `ServicioRegistrarPaciente`) actúa como una transacción atómica que orquesta las entidades del dominio y los repositorios, inyectados vía constructor.
+*   **Composition Root:** La capa transversal actúa como contenedor de Inyección de Dependencias, centralizando la instanciación de factorías, repositorios y servicios. Esto facilita enormemente la inyección de *mocks* durante el testing.
+
+---
 
 ## Integrantes
 - Edgar Santiesteban Mendo
